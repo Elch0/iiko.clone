@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iiko Клон</title>
+  <link rel="stylesheet" href="style.css?v=20260730-2" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <button id="brand-toggle" class="brand-button" type="button" title="Показать цены">iiko Клон</button>
+        <button id="menu-edit-toggle" class="subtitle-button" type="button" title="Режим редактирования">by Elcho</button>
+      </div>
+      <div class="page-switch">
+        <button id="tab-create" class="tab-button active">Создать чек</button>
+        <button id="tab-history" class="tab-button">Сохраненные чеки</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="page-create" class="page active">
+        <div class="create-grid">
+          <section class="selected-panel">
+            <div class="panel-header">
+              <div id="payment-type" class="payment-type"></div>
+            </div>
+
+            <div id="selected-list" class="selected-list">
+              <div class="empty-state">Выберите товары в меню справа</div>
+            </div>
+
+            <div id="quantity-modal" class="qty-modal hidden"></div>
+
+            <div class="selected-footer">
+              <div class="summary">
+                <div>Всего:</div>
+                <div id="total-price" class="total-price">0 ₸</div>
+              </div>
+
+              <div id="selected-actions" class="selected-actions"></div>
+
+              <button id="save-button" class="save-button">Сохранить чек</button>
+
+              <div id="receipt-tabs" class="receipt-tabs">
+                <button id="prev-receipt" class="receipt-nav-button receipt-prev" title="Предыдущий чек" disabled>
+                  &lt;
+                </button>
+                <div class="receipt-number-display">
+                  <span id="receipt-number">1</span> из <span id="receipt-count">1</span>
+                </div>
+                <button id="next-receipt" class="receipt-nav-button receipt-next" title="Следующий чек" disabled>
+                  &gt;
+                </button>
+                <button id="delete-receipt" class="receipt-delete-button" title="Удалить текущий чек" aria-label="Удалить текущий чек">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7h16M9 7V4h6v3m-8 0 1 13h10l1-13" />
+                  </svg>
+                </button>
+                <button id="add-receipt" class="receipt-add-button" title="Добавить новый чек">
+                  +
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-panel">
+            <div class="panel-header menu-header">
+              <div class="menu-actions">
+                <div id="safia-toolbar-actions" class="safia-toolbar-actions hidden"></div>
+                <div class="menu-nav-buttons">
+                  <button id="back-button" class="icon-button" aria-label="Назад" title="Назад">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M15 6L9 12l6 6" />
+                    </svg>
+                  </button>
+                  <button id="search-button" class="icon-button" aria-label="Поиск" title="Поиск">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm8 12 2 2" />
+                    </svg>
+                  </button>
+                  <button id="home-button" class="icon-button" aria-label="Домой" title="Домой">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" />
+                    </svg>
+                  </button>
+                  <button id="menu-edit-add-button" class="icon-button edit-action-button hidden" aria-label="Добавить" title="Добавить">
+                    +
+                  </button>
+                  <button id="menu-edit-save-button" class="icon-button edit-action-button hidden" aria-label="Сохранить" title="Сохранить">
+                    ✓
+                  </button>
+                  <div id="menu-add-popover" class="menu-add-popover hidden">
+                    <button id="menu-add-folder" type="button">Добавить папку</button>
+                    <button id="menu-add-item" type="button">Добавить позицию</button>
+                  </div>
+                </div>
+                <div id="menu-header-pagination" class="menu-header-pagination"></div>
+              </div>
+            </div>
+
+            <div class="menu-content-zone">
+              <div id="menu-title" class="menu-title"></div>
+              <div id="menu-search-panel" class="menu-search-panel hidden">
+                <input id="menu-search-input" class="menu-search-input" type="text" placeholder="Поиск товара по названию" />
+              </div>
+              <div id="folder-list" class="folder-list"></div>
+            </div>
+            <div id="menu-pagination-zone" class="menu-pagination-zone"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="page-history" class="page">
+        <div class="history-header">
+          <div class="history-actions">
+            <button id="clear-receipts-button" class="filter-button">Удалить все чеки</button>
+          </div>
+          <div class="history-filter">
+            <button data-filter="combined" class="filter-button">Сводный чек</button>
+            <button data-filter="all" class="filter-button active">Все</button>
+            <button data-filter="kaspi" class="filter-button kaspi">Kaspi</button>
+            <button data-filter="halyk" class="filter-button halyk">Halyk</button>
+            <button data-filter="nalichka" class="filter-button nalichka">Наличка</button>
+            <button data-filter="tab" class="filter-button tab">TAB</button>
+          </div>
+        </div>
+
+        <div class="history-summary">
+          <div>Kaspi: <strong id="sum-kaspi">0 ₸</strong></div>
+          <div>Halyk: <strong id="sum-halyk">0 ₸</strong></div>
+          <div>Наличка: <strong id="sum-nalichka">0 ₸</strong></div>
+          <div>Итого: <strong id="sum-total">0 ₸</strong></div>
+        </div>
+
+        <div id="receipt-list" class="receipt-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    window.__REMOTE_CATALOG_URL__ = window.__REMOTE_CATALOG_URL__ || (
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:3000/api/catalog'
+        : 'https://your-render-app.onrender.com/api/catalog'
+    );
+    window.__API_BASE_URL__ = window.__API_BASE_URL__ || (
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:3000'
+        : 'https://your-render-app.onrender.com'
+    );
+  </script>
+  <script src="utils.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

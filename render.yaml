@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: iiko-clone-api
+    env: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: POSTGRES_URL
+        sync: false
+      - key: GITHUB_SYNC
+        value: false
