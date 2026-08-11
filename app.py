@@ -28,7 +28,16 @@ USE_POSTGRES = bool(PG_CONNECTION_STRING)
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['JSON_SORT_KEYS'] = False
-CORS(app, resources={r'/api/*': {'origins': '*'}})
+CORS(
+    app,
+    resources={
+        r'/api/*': {
+            'origins': '*',
+            'methods': ['GET', 'POST', 'PUT', 'OPTIONS'],
+            'allow_headers': ['Content-Type', 'x-admin-token', 'Authorization', 'X-Requested-With']
+        }
+    }
+)
 
 catalog = {
     'categories': [
@@ -311,6 +320,14 @@ def invalid_payload(message='Invalid payload'):
 
 def create_app():
     initialize_catalog()
+
+    @app.route('/api/<path:dummy>', methods=['OPTIONS'])
+    def api_options(dummy):
+        response = app.make_default_options_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, x-admin-token, Authorization, X-Requested-With'
+        return response
 
     @app.route('/health', methods=['GET'])
     def health():

@@ -3970,10 +3970,13 @@ const defaultRemoteCatalogUrl = (typeof window !== 'undefined' && window.locatio
   : 'http://localhost:3000/api/catalog';
 const androidFallbackCatalogUrl = 'http://10.0.2.2:3000/api/catalog';
 const configuredRemoteCatalogUrl = (typeof window !== 'undefined' && window.__REMOTE_CATALOG_URL__) ? String(window.__REMOTE_CATALOG_URL__).trim() : '';
-const remoteCatalogUrl = configuredRemoteCatalogUrl && !/(your-server|your-user|example\.com)/i.test(configuredRemoteCatalogUrl)
+const remoteCatalogUrl = configuredRemoteCatalogUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredRemoteCatalogUrl)
   ? configuredRemoteCatalogUrl
   : (isAndroidCapacitor ? androidFallbackCatalogUrl : defaultRemoteCatalogUrl);
-const apiBaseUrl = (typeof window !== 'undefined' && window.__API_BASE_URL__) ? String(window.__API_BASE_URL__).replace(/\/$/, '') : '';
+const configuredApiBaseUrl = (typeof window !== 'undefined' && window.__API_BASE_URL__) ? String(window.__API_BASE_URL__).replace(/\/$/, '') : '';
+const apiBaseUrl = configuredApiBaseUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredApiBaseUrl)
+  ? configuredApiBaseUrl
+  : (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin.replace(/\/$/, '') : 'https://iiko-clone-1.onrender.com');
 const adminModeFlag = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search).get('admin') === '1' : false;
 const storedAdminMode = (typeof window !== 'undefined' && window.localStorage) ? window.localStorage.getItem(adminModeStorageKey) === 'true' : false;
 let isAdminMode = adminModeFlag || storedAdminMode;

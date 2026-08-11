@@ -140,16 +140,17 @@
   </div>
 
   <script>
-    window.__REMOTE_CATALOG_URL__ = window.__REMOTE_CATALOG_URL__ || (
-      window.location.hostname === 'localhost'
-        ? 'http://localhost:3000/api/catalog'
-        : 'https://your-render-app.onrender.com/api/catalog'
-    );
-    window.__API_BASE_URL__ = window.__API_BASE_URL__ || (
+    const renderApiBaseUrl = window.__APP_API_BASE_URL__ || (
       window.location.hostname === 'localhost'
         ? 'http://localhost:3000'
-        : 'https://your-render-app.onrender.com'
+        : window.location.origin || 'https://iiko-clone-1.onrender.com'
     );
+    const safeRenderApiBaseUrl = /your-render-app\.onrender\.com|your-server|your-user|example\.com/i.test(renderApiBaseUrl)
+      ? (window.location.origin || 'https://iiko-clone-1.onrender.com')
+      : renderApiBaseUrl;
+
+    window.__REMOTE_CATALOG_URL__ = `${safeRenderApiBaseUrl}/api/catalog`;
+    window.__API_BASE_URL__ = safeRenderApiBaseUrl;
   </script>
   <script src="utils.js"></script>
   <script src="app.js"></script>
