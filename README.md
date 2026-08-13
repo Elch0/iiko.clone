@@ -7,7 +7,7 @@ Python-клон приложения iiko-clone с API каталога, лок�
 - Flask backend с API для каталога и CRUD операций
 - статический фронтенд в папке `static/`
 - поддержка PostgreSQL через `POSTGRES_URL` / `DATABASE_URL`
-- файлы для деплоя на Render и Vercel
+- файловая настройка для Cloudflare Pages и деплой на Render
 - `requirements.txt` и `gunicorn` для production запуска
 
 ## Локальная установка
@@ -56,14 +56,18 @@ python app.py
 
 ## Production архитектура
 
-- Frontend: Vercel
+- Frontend: Cloudflare Pages
 - Backend: Render
 - Database: Railway PostgreSQL
 - Monitoring: UptimeRobot
 
-### Vercel
+### Cloudflare Pages
 
-Загружайте статический фронтенд в Vercel. Для SPA используйте `vercel.json` и корневой путь проекта.
+Загружайте статический фронтенд в Cloudflare Pages. Если проект публикуется как папка `static`, добавьте файл `_redirects` со строкой:
+
+```text
+/* /index.html 200
+```
 
 ### Render
 
@@ -78,7 +82,7 @@ gunicorn app:app --bind 0.0.0.0:$PORT
 Создайте PostgreSQL сервис на Railway и передайте в Render переменную:
 
 ```bash
-POSTGRES_URL=postgresql://... 
+POSTGRES_URL=postgresql://...
 ```
 
 ### UptimeRobot

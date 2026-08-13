@@ -28,15 +28,16 @@ USE_POSTGRES = bool(PG_CONNECTION_STRING)
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['JSON_SORT_KEYS'] = False
+
+# Более полная CORS конфигурация
 CORS(
     app,
-    resources={
-        r'/api/*': {
-            'origins': '*',
-            'methods': ['GET', 'POST', 'PUT', 'OPTIONS'],
-            'allow_headers': ['Content-Type', 'x-admin-token', 'Authorization', 'X-Requested-With']
-        }
-    }
+    origins=['*'],
+    methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    allow_headers=['Content-Type', 'x-admin-token', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    expose_headers=['Content-Type', 'Content-Length'],
+    supports_credentials=False,
+    max_age=3600
 )
 
 catalog = {
@@ -276,16 +277,19 @@ def save_catalog(next_catalog):
     if USE_POSTGRES:
         try:
             save_catalog_to_postgres(next_catalog)
-            return
         except Exception as error:
             print(f'Failed to save catalog to Postgres: {error}')
             raise
 
-    ensure_data_file()
-    serialized = json.dumps(next_catalog, ensure_ascii=False, indent=2)
-    DATA_FILE.write_text(serialized, encoding='utf-8')
-    BACKUP_FILE.write_text(serialized, encoding='utf-8')
-    sync_catalog_to_github(serialized)
+    try:
+        ensure_data_file()
+        serialized = json.dumps(next_catalog, ensure_ascii=False, indent=2)
+        DATA_FILE.write_text(serialized, encoding='utf-8')
+        BACKUP_FILE.write_text(serialized, encoding='utf-8')
+        sync_catalog_to_github(serialized)
+    except Exception as error:
+        print(f'Failed to save catalog to file: {error}')
+        raise
 
 
 def rebuild_items():
@@ -321,13 +325,12 @@ def invalid_payload(message='Invalid payload'):
 def create_app():
     initialize_catalog()
 
-    @app.route('/api/<path:dummy>', methods=['OPTIONS'])
-    def api_options(dummy):
-        response = app.make_default_options_response()
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, x-admin-token, Authorization, X-Requested-With'
-        return response
+    @app.before_request
+    def log_request():
+        method = request.method
+        path = request.path
+        origin = request.headers.get('Origin', 'unknown')
+        print(f'[{method}] {path} from {origin}')
 
     @app.route('/health', methods=['GET'])
     def health():
@@ -346,59 +349,80 @@ def create_app():
         if not body or not isinstance(body.get('categories'), list):
             return invalid_payload('Invalid catalog payload')
 
-        catalog['categories'] = body['categories']
-        rebuild_items()
-        save_catalog(catalog)
-        return jsonify(catalog)
+        try:
+            # Validate categories structure
+            for category in body.get('categories', []):
+                if not isinstance(category, dict):
+                    return invalid_payload('Each category must be an object')
+                if 'id' not in category or 'title' not in category:
+                    return invalid_payload('Each category must have "id" and "title"')
+                if not isinstance(category.get('items'), list):
+                    category['items'] = []
+            
+            catalog['categories'] = body['categories']
+            rebuild_items()
+            save_catalog(catalog)
+            return jsonify(catalog)
+        except Exception as error:
+            print(f'Error saving catalog: {error}')
+            return jsonify({'error': f'Failed to save catalog: {str(error)}'}), 500
 
     @app.route('/api/items/<item_id>', methods=['PUT'])
     def put_item(item_id):
         if not require_admin_token():
             return jsonify({'error': 'Forbidden'}), 403
 
-        body = request.get_json(silent=True) or {}
-        updated = False
-        for category in catalog['categories']:
-            for item in category.get('items', []):
-                if item.get('id') == item_id:
-                    if isinstance(body.get('name'), str):
-                        item['name'] = body['name']
-                    if isinstance(body.get('price'), (int, float)):
-                        item['price'] = body['price']
-                    if isinstance(body.get('modifiers'), list):
-                        item['modifiers'] = body['modifiers']
-                    if isinstance(body.get('modifier'), str):
-                        item['modifier'] = body['modifier']
-                    updated = True
+        try:
+            body = request.get_json(silent=True) or {}
+            updated = False
+            for category in catalog['categories']:
+                for item in category.get('items', []):
+                    if item.get('id') == item_id:
+                        if isinstance(body.get('name'), str):
+                            item['name'] = body['name']
+                        if isinstance(body.get('price'), (int, float)):
+                            item['price'] = body['price']
+                        if isinstance(body.get('modifiers'), list):
+                            item['modifiers'] = body['modifiers']
+                        if isinstance(body.get('modifier'), str):
+                            item['modifier'] = body['modifier']
+                        updated = True
+                        break
+                if updated:
                     break
-            if updated:
-                break
 
-        if not updated:
-            return jsonify({'error': 'Item not found'}), 404
+            if not updated:
+                return jsonify({'error': 'Item not found'}), 404
 
-        rebuild_items()
-        save_catalog(catalog)
-        return jsonify(catalog)
+            rebuild_items()
+            save_catalog(catalog)
+            return jsonify(catalog)
+        except Exception as error:
+            print(f'Error updating item: {error}')
+            return jsonify({'error': f'Failed to update item: {str(error)}'}), 500
 
     @app.route('/api/categories/<category_id>', methods=['PUT'])
     def put_category(category_id):
         if not require_admin_token():
             return jsonify({'error': 'Forbidden'}), 403
 
-        body = request.get_json(silent=True) or {}
-        title = body.get('title')
-        if not isinstance(title, str) or not title.strip():
-            return invalid_payload('Invalid category title')
+        try:
+            body = request.get_json(silent=True) or {}
+            title = body.get('title')
+            if not isinstance(title, str) or not title.strip():
+                return invalid_payload('Invalid category title')
 
-        category = next((entry for entry in catalog['categories'] if entry.get('id') == category_id), None)
-        if not category:
-            return jsonify({'error': 'Category not found'}), 404
+            category = next((entry for entry in catalog['categories'] if entry.get('id') == category_id), None)
+            if not category:
+                return jsonify({'error': 'Category not found'}), 404
 
-        category['title'] = title.strip()
-        rebuild_items()
-        save_catalog(catalog)
-        return jsonify(catalog)
+            category['title'] = title.strip()
+            rebuild_items()
+            save_catalog(catalog)
+            return jsonify(catalog)
+        except Exception as error:
+            print(f'Error updating category: {error}')
+            return jsonify({'error': f'Failed to update category: {str(error)}'}), 500
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
@@ -406,6 +430,15 @@ def create_app():
         if path and (BASE_DIR / 'static' / path).exists():
             return send_from_directory(str(BASE_DIR / 'static'), path)
         return send_from_directory(str(BASE_DIR / 'static'), 'index.html')
+
+    @app.after_request
+    def after_request(response):
+        # Гарантированно добавляем CORS заголовки ко всем ответам
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, x-admin-token, Authorization, X-Requested-With, Accept, Origin'
+        response.headers['Access-Control-Max-Age'] = '3600'
+        return response
 
     return app
 
