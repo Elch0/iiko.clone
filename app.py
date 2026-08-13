@@ -54,6 +54,7 @@ catalog = {
 
 
 def create_default_catalog():
+    """Fallback catalog with sample data, used if catalog.json is missing or empty"""
     return {
         'categories': [
             {
@@ -61,6 +62,25 @@ def create_default_catalog():
                 'title': 'Товары без папки',
                 'parentId': None,
                 'items': []
+            },
+            {
+                'id': 'sample-cat-1',
+                'title': 'Пример категории',
+                'parentId': None,
+                'items': [
+                    {
+                        'id': 'sample-item-1',
+                        'name': 'Пример товара 1',
+                        'price': 1000,
+                        'modifier': ''
+                    },
+                    {
+                        'id': 'sample-item-2',
+                        'name': 'Пример товара 2',
+                        'price': 2000,
+                        'modifier': ''
+                    }
+                ]
             }
         ],
         'items': []
@@ -199,6 +219,32 @@ def save_catalog_to_postgres(next_catalog):
             conn.commit()
 
 
+def load_from_github():
+    """Try to load catalog from GitHub as fallback"""
+    if not GITHUB_TOKEN:
+        return None
+    if not GITHUB_REPO or '/' not in GITHUB_REPO:
+        return None
+    
+    try:
+        github_api_url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_PATH}'
+        headers = {
+            'Authorization': f'token {GITHUB_TOKEN}',
+            'Accept': 'application/vnd.github.v3.raw'
+        }
+        response = requests.get(github_api_url, headers=headers, params={'ref': GITHUB_BRANCH}, timeout=10)
+        if response.status_code == 200:
+            parsed = response.json()
+            if is_meaningful_catalog(parsed):
+                print(f'Loaded catalog from GitHub {GITHUB_REPO}/{GITHUB_PATH}@{GITHUB_BRANCH}')
+                return {'categories': parsed.get('categories', []), 'items': []}
+        else:
+            print(f'GitHub fetch returned {response.status_code}')
+    except Exception as e:
+        print(f'Failed to load from GitHub: {e}')
+    return None
+
+
 def load_catalog():
     if USE_POSTGRES:
         try:
@@ -208,6 +254,9 @@ def load_catalog():
             return create_default_catalog()
 
     ensure_data_file()
+    loaded_catalog = None
+    
+    # Try to load from data files
     for candidate in (DATA_FILE, BACKUP_FILE):
         try:
             if not candidate.exists():
@@ -225,9 +274,37 @@ def load_catalog():
                 print(f'Catalog is not meaningful (empty) in: {candidate}')
                 continue
             print(f'Loaded catalog from {candidate} with {len(parsed.get("categories", []))} categories')
-            return {'categories': parsed.get('categories', []), 'items': []}
+            loaded_catalog = {'categories': parsed.get('categories', []), 'items': []}
+            break
         except Exception as error:
             print(f'Failed to load catalog from {candidate}: {error}')
+
+    # If we successfully loaded a catalog, ensure it's saved to both files
+    if loaded_catalog and not is_meaningful_catalog(loaded_catalog):
+        loaded_catalog = None
+        
+    if loaded_catalog:
+        try:
+            serialized = json.dumps(loaded_catalog, ensure_ascii=False, indent=2)
+            DATA_FILE.write_text(serialized, encoding='utf-8')
+            BACKUP_FILE.write_text(serialized, encoding='utf-8')
+            print('Refreshed catalog files from loaded data')
+        except Exception as e:
+            print(f'Warning: could not refresh catalog files: {e}')
+        return loaded_catalog
+
+    # Try to load from GitHub as last resort before default
+    print('Attempting to load from GitHub...')
+    github_catalog = load_from_github()
+    if github_catalog:
+        try:
+            serialized = json.dumps(github_catalog, ensure_ascii=False, indent=2)
+            DATA_FILE.write_text(serialized, encoding='utf-8')
+            BACKUP_FILE.write_text(serialized, encoding='utf-8')
+            print('Saved GitHub catalog to files')
+        except Exception as e:
+            print(f'Warning: could not save GitHub catalog to files: {e}')
+        return github_catalog
 
     print('Failed to load catalog from any source, using default')
     return create_default_catalog()
