@@ -211,17 +211,25 @@ def load_catalog():
     for candidate in (DATA_FILE, BACKUP_FILE):
         try:
             if not candidate.exists():
+                print(f'Catalog file does not exist: {candidate}')
                 continue
             raw = candidate.read_text(encoding='utf-8')
+            if not raw.strip():
+                print(f'Catalog file is empty: {candidate}')
+                continue
             parsed = json.loads(raw)
             if not isinstance(parsed, dict):
+                print(f'Catalog is not a dict in: {candidate}')
                 continue
             if not is_meaningful_catalog(parsed):
+                print(f'Catalog is not meaningful (empty) in: {candidate}')
                 continue
+            print(f'Loaded catalog from {candidate} with {len(parsed.get("categories", []))} categories')
             return {'categories': parsed.get('categories', []), 'items': []}
         except Exception as error:
             print(f'Failed to load catalog from {candidate}: {error}')
 
+    print('Failed to load catalog from any source, using default')
     return create_default_catalog()
 
 
@@ -335,6 +343,23 @@ def create_app():
     @app.route('/health', methods=['GET'])
     def health():
         return jsonify({'status': 'ok', 'postgres': USE_POSTGRES})
+
+    @app.route('/api/health-reload', methods=['POST'])
+    def health_reload():
+        """Emergency endpoint to reload catalog from file"""
+        if not require_admin_token():
+            return jsonify({'error': 'Forbidden'}), 403
+        
+        try:
+            loaded = load_catalog()
+            catalog.clear()
+            catalog.update(loaded)
+            rebuild_items()
+            print(f'Reloaded catalog: {len(catalog.get("categories", []))} categories')
+            return jsonify({'status': 'reloaded', 'catalog': catalog})
+        except Exception as error:
+            print(f'Failed to reload catalog: {error}')
+            return jsonify({'error': f'Failed to reload: {str(error)}'}), 500
 
     @app.route('/api/catalog', methods=['GET'])
     def get_catalog():
