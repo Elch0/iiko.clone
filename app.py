@@ -68,13 +68,11 @@ def create_default_catalog():
     if EMBEDDED_CATALOG_JSON:
         try:
             embedded = json.loads(EMBEDDED_CATALOG_JSON)
-            print(f'Using embedded fallback catalog with {len(embedded.get("categories", []))} categories')
             return embedded
         except Exception as e:
-            print(f'Failed to parse embedded catalog: {e}')
+            pass
     
     # Minimal fallback if embedded fails
-    print('Using minimal fallback catalog')
     return {
         'categories': [
             {
@@ -237,12 +235,9 @@ def load_from_github():
         if response.status_code == 200:
             parsed = response.json()
             if is_meaningful_catalog(parsed):
-                print(f'Loaded catalog from GitHub {GITHUB_REPO}/{GITHUB_PATH}@{GITHUB_BRANCH}')
                 return {'categories': parsed.get('categories', []), 'items': []}
-        else:
-            print(f'GitHub fetch returned {response.status_code}')
     except Exception as e:
-        print(f'Failed to load from GitHub: {e}')
+        pass
     return None
 
 
@@ -251,7 +246,6 @@ def load_catalog():
         try:
             return load_catalog_from_postgres()
         except Exception as error:
-            print(f'Failed to load catalog from Postgres: {error}')
             return create_default_catalog()
 
     ensure_data_file()
@@ -261,24 +255,19 @@ def load_catalog():
     for candidate in (DATA_FILE, BACKUP_FILE):
         try:
             if not candidate.exists():
-                print(f'Catalog file does not exist: {candidate}')
                 continue
             raw = candidate.read_text(encoding='utf-8')
             if not raw.strip():
-                print(f'Catalog file is empty: {candidate}')
                 continue
             parsed = json.loads(raw)
             if not isinstance(parsed, dict):
-                print(f'Catalog is not a dict in: {candidate}')
                 continue
             if not is_meaningful_catalog(parsed):
-                print(f'Catalog is not meaningful (empty) in: {candidate}')
                 continue
-            print(f'Loaded catalog from {candidate} with {len(parsed.get("categories", []))} categories')
             loaded_catalog = {'categories': parsed.get('categories', []), 'items': []}
             break
         except Exception as error:
-            print(f'Failed to load catalog from {candidate}: {error}')
+            pass
 
     # If we successfully loaded a catalog, ensure it's saved to both files
     if loaded_catalog and not is_meaningful_catalog(loaded_catalog):
@@ -289,25 +278,20 @@ def load_catalog():
             serialized = json.dumps(loaded_catalog, ensure_ascii=False, indent=2)
             DATA_FILE.write_text(serialized, encoding='utf-8')
             BACKUP_FILE.write_text(serialized, encoding='utf-8')
-            print('Refreshed catalog files from loaded data')
         except Exception as e:
-            print(f'Warning: could not refresh catalog files: {e}')
+            pass
         return loaded_catalog
 
     # Try to load from GitHub as last resort before default
-    print('Attempting to load from GitHub...')
     github_catalog = load_from_github()
     if github_catalog:
         try:
             serialized = json.dumps(github_catalog, ensure_ascii=False, indent=2)
             DATA_FILE.write_text(serialized, encoding='utf-8')
             BACKUP_FILE.write_text(serialized, encoding='utf-8')
-            print('Saved GitHub catalog to files')
         except Exception as e:
-            print(f'Warning: could not save GitHub catalog to files: {e}')
+            pass
         return github_catalog
-
-    print('Failed to load catalog from any source, using default')
     return create_default_catalog()
 
 
@@ -315,10 +299,8 @@ def sync_catalog_to_github(serialized):
     if not GITHUB_SYNC:
         return
     if not GITHUB_TOKEN:
-        print('GITHUB_SYNC is enabled, but GITHUB_TOKEN is not set. Skipping GitHub sync.')
         return
     if not GITHUB_REPO or '/' not in GITHUB_REPO:
-        print('GITHUB_REPO is invalid or missing. Expected format "owner/repo".')
         return
 
     github_api_url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_PATH}'
@@ -333,11 +315,9 @@ def sync_catalog_to_github(serialized):
             content = response.json()
             sha = content.get('sha')
         elif response.status_code == 404:
-            print(f'GitHub GET returned 404 for {GITHUB_REPO}/{GITHUB_PATH}@{GITHUB_BRANCH}. '
-                  'This usually means the repository or path was not found, or the token lacks read access. '
-                  'If the path is new, the repository and branch must still exist and the token must have repository access.')
+            pass
         else:
-            print(f'GitHub GET returned {response.status_code}: {response.text}')
+            pass
 
         payload = {
             'message': f'Update catalog.json via admin edit {__import__('datetime').datetime.utcnow().isoformat()}Z',
@@ -350,13 +330,8 @@ def sync_catalog_to_github(serialized):
         put_response = requests.put(github_api_url, headers=headers, json=payload, timeout=10)
         if put_response.status_code in (200, 201):
             return
-        if put_response.status_code == 404:
-            print(f'GitHub sync failed 404 for {GITHUB_REPO}/{GITHUB_PATH}@{GITHUB_BRANCH}. '
-                  'Verify repository exists, the branch name is correct, and the token has appropriate permissions (public_repo for public repos or repo for private repos).')
-        else:
-            print(f'GitHub sync failed: {put_response.status_code} {put_response.text}')
     except Exception as error:
-        print(f'Failed to sync catalog to GitHub: {error}')
+        pass
 
 
 def save_catalog(next_catalog):
@@ -364,7 +339,6 @@ def save_catalog(next_catalog):
         try:
             save_catalog_to_postgres(next_catalog)
         except Exception as error:
-            print(f'Failed to save catalog to Postgres: {error}')
             raise
 
     try:
@@ -374,7 +348,6 @@ def save_catalog(next_catalog):
         BACKUP_FILE.write_text(serialized, encoding='utf-8')
         sync_catalog_to_github(serialized)
     except Exception as error:
-        print(f'Failed to save catalog to file: {error}')
         raise
 
 
@@ -413,10 +386,7 @@ def create_app():
 
     @app.before_request
     def log_request():
-        method = request.method
-        path = request.path
-        origin = request.headers.get('Origin', 'unknown')
-        print(f'[{method}] {path} from {origin}')
+        pass
 
     @app.route('/health', methods=['GET'])
     def health():
@@ -433,10 +403,8 @@ def create_app():
             catalog.clear()
             catalog.update(loaded)
             rebuild_items()
-            print(f'Reloaded catalog: {len(catalog.get("categories", []))} categories')
             return jsonify({'status': 'reloaded', 'catalog': catalog})
         except Exception as error:
-            print(f'Failed to reload catalog: {error}')
             return jsonify({'error': f'Failed to reload: {str(error)}'}), 500
 
     @app.route('/api/catalog', methods=['GET'])
@@ -467,7 +435,6 @@ def create_app():
             save_catalog(catalog)
             return jsonify(catalog)
         except Exception as error:
-            print(f'Error saving catalog: {error}')
             return jsonify({'error': f'Failed to save catalog: {str(error)}'}), 500
 
     @app.route('/api/items/<item_id>', methods=['PUT'])
@@ -501,7 +468,6 @@ def create_app():
             save_catalog(catalog)
             return jsonify(catalog)
         except Exception as error:
-            print(f'Error updating item: {error}')
             return jsonify({'error': f'Failed to update item: {str(error)}'}), 500
 
     @app.route('/api/categories/<category_id>', methods=['PUT'])
@@ -524,7 +490,6 @@ def create_app():
             save_catalog(catalog)
             return jsonify(catalog)
         except Exception as error:
-            print(f'Error updating category: {error}')
             return jsonify({'error': f'Failed to update category: {str(error)}'}), 500
 
     @app.route('/', defaults={'path': ''})
@@ -550,5 +515,4 @@ app = create_app()
 
 
 if __name__ == '__main__':
-    print(f'Server running on http://0.0.0.0:{PORT}')
     app.run(host='0.0.0.0', port=PORT)

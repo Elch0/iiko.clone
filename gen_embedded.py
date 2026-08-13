@@ -12,6 +12,3 @@ with open('_embedded_catalog.py', 'w', encoding='utf-8') as out:
     out.write('EMBEDDED_CATALOG_JSON = r"""')
     out.write(catalog_text)
     out.write('"""\n')
-
-print("✓ Created _embedded_catalog.py with full catalog")
-print(f"✓ File size: {len(catalog_text)} bytes")

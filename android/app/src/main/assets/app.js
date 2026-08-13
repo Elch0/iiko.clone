@@ -1,4 +1,4 @@
-const { debounce, defer, memoize } = (typeof window !== 'undefined' && window.iikoUtils) ? window.iikoUtils : require('./utils');
+﻿const { debounce, defer, memoize } = (typeof window !== 'undefined' && window.iikoUtils) ? window.iikoUtils : require('./utils');
 
 const paymentTypes = [
   { id: 'kaspi', label: 'Kaspi', color: 'kaspi' },
@@ -3995,8 +3995,7 @@ function persistCatalogLocally() {
   try {
     window.localStorage.setItem(catalogStorageKey, JSON.stringify({ categories }));
   } catch (error) {
-    console.warn('Failed to persist catalog locally', error);
-  }
+    }
 }
 
 function clearCatalogLocalCache() {
@@ -4004,8 +4003,7 @@ function clearCatalogLocalCache() {
   try {
     window.localStorage.removeItem(catalogStorageKey);
   } catch (error) {
-    console.warn('Failed to clear catalog cache', error);
-  }
+    }
 }
 
 function hasMeaningfulCatalogCategories(catalogCategories) {
@@ -4084,8 +4082,7 @@ async function loadCatalogFromServer() {
         return;
       }
     } catch (error) {
-      console.warn('Failed to load catalog from', sourceUrl, error);
-    }
+      }
   }
 
   if (!hasMeaningfulCatalogCategories(categories)) {
@@ -4120,8 +4117,7 @@ async function saveCatalogToServer() {
       await saveCatalogToServer();
     }
   } catch (error) {
-    console.error('Failed to sync catalog to server', error);
-  } finally {
+    } finally {
     catalogSyncing = false;
   }
 }
@@ -4139,8 +4135,7 @@ async function syncItemToServer(item) {
     });
     persistCatalogLocally();
   } catch (error) {
-    console.error('Failed to sync item to server', error);
-  }
+    }
 }
 
 async function syncCategoryToServer(category) {
@@ -4156,8 +4151,7 @@ async function syncCategoryToServer(category) {
     });
     persistCatalogLocally();
   } catch (error) {
-    console.error('Failed to sync category to server', error);
-  }
+    }
 }
 
 initializeCatalog();
