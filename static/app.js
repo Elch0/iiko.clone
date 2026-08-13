@@ -1219,15 +1219,7 @@ const fallbackCatalog = {
       "id": "root",
       "title": "Товары без папки",
       "parentId": null,
-      "items": [
-        {
-          "id": "item1784226119236",
-          "name": "Пакет",
-          "price": 15,
-          "modifier": "",
-          "modifiers": []
-        }
-      ]
+      "items": []
     },
     {
       "id": "cat1",
@@ -5610,10 +5602,7 @@ function buildMenuEntries() {
       ...parentCategory.items.slice().sort(compareByName).map(item => ({ type: 'item', data: item }))
     ];
   } else if (menuState.view === 'folders' && !parentCategory) {
-    entries = [
-      ...visibleCategories.map(category => ({ type: 'folder', data: category })),
-      ...(rootCategory?.items || []).slice().sort(compareByName).map(item => ({ type: 'item', data: item }))
-    ];
+    entries = visibleCategories.map(category => ({ type: 'folder', data: category }));
     itemsCategoryForEditing = rootCategory;
   } else {
     entries = visibleCategories.map(category => ({ type: 'folder', data: category }));
