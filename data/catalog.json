@@ -1702,14 +1702,7 @@
           "price": 9900,
           "modifier": "",
           "modifiers": []
-        }
-      ]
-    },
-    {
-      "id": "cat-torty-main",
-      "title": "Круглые торты основные",
-      "parentId": "cat-torty",
-      "items": [
+        },
         {
           "id": "t-1",
           "name": "Адмирал торт круглый",
@@ -2197,7 +2190,7 @@
     {
       "id": "cat-merchi",
       "title": "Мерчи",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "mer-1",
@@ -2225,7 +2218,7 @@
     {
       "id": "cat-mini-kuhnya",
       "title": "Мини Кухня",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "mk-1",
@@ -2253,7 +2246,7 @@
     {
       "id": "cat-myasnaya",
       "title": "Мясная Выпечка",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "my-1",

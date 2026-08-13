@@ -1703,14 +1703,7 @@ EMBEDDED_CATALOG_JSON = r"""{
           "price": 9900,
           "modifier": "",
           "modifiers": []
-        }
-      ]
-    },
-    {
-      "id": "cat-torty-main",
-      "title": "Круглые торты основные",
-      "parentId": "cat-torty",
-      "items": [
+        },
         {
           "id": "t-1",
           "name": "Адмирал торт круглый",
@@ -2198,7 +2191,7 @@ EMBEDDED_CATALOG_JSON = r"""{
     {
       "id": "cat-merchi",
       "title": "Мерчи",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "mer-1",
@@ -2226,7 +2219,7 @@ EMBEDDED_CATALOG_JSON = r"""{
     {
       "id": "cat-mini-kuhnya",
       "title": "Мини Кухня",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "mk-1",
@@ -2254,7 +2247,7 @@ EMBEDDED_CATALOG_JSON = r"""{
     {
       "id": "cat-myasnaya",
       "title": "Мясная Выпечка",
-      "parentId": "cat-melkoshuchka",
+      "parentId": null,
       "items": [
         {
           "id": "my-1",
