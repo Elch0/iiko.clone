@@ -4028,9 +4028,10 @@ function getPreferredDefaultCategoryId() {
 
 function applyFinalMenuState() {
   const preferredCategoryId = getPreferredDefaultCategoryId();
+  currentCategoryId = preferredCategoryId || categories.find(category => category.id !== 'root')?.id || null;
   menuState = {
     view: preferredCategoryId ? 'items' : 'folders',
-    categoryId: preferredCategoryId,
+    categoryId: preferredCategoryId || currentCategoryId,
     searchQuery: '',
     history: []
   };
@@ -4188,7 +4189,7 @@ async function syncCategoryToServer(category) {
 }
 
 const storageKey = receiptStorageKey;
-let currentCategoryId = categories[0].id;
+let currentCategoryId = null;
 let activePage = 'create';
 let selectedPayment = '';
 let selectedItems = {};
@@ -4447,7 +4448,8 @@ function saveReceipts() {
 }
 
 function getCurrentCategory() {
-  return categories.find(category => category.id === menuState.categoryId) || null;
+  const targetId = menuState.categoryId || currentCategoryId;
+  return categories.find(category => category.id === targetId) || categories.find(category => category.id !== 'root') || null;
 }
 
 function setMenuEditing(value) {
