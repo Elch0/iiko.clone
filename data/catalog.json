@@ -1,14 +1,14 @@
 {
   "categories": [
     {
-      "title": "GitHub-backed test",
+      "title": "Github-Backed Test",
       "items": [],
       "id": "root",
       "parentId": null
     },
     {
       "id": "cat1",
-      "title": "Safia БАР",
+      "title": "Safia Бар",
       "parentId": null,
       "items": [
         {
@@ -39,7 +39,7 @@
     },
     {
       "id": "cat2",
-      "title": "ВКУСНЯШКИ",
+      "title": "Вкусняшки",
       "parentId": null,
       "items": [
         {
@@ -82,7 +82,7 @@
     },
     {
       "id": "cat3",
-      "title": "КЕКС и ПОПС",
+      "title": "Кекс И Попс",
       "parentId": null,
       "items": [
         {
@@ -696,7 +696,7 @@
     },
     {
       "id": "cat5",
-      "title": "Круглые торты alt",
+      "title": "Круглые Торты Alt",
       "parentId": null,
       "items": [
         {
@@ -739,7 +739,7 @@
     },
     {
       "id": "cat6",
-      "title": "МЕЛКОШТУЧКА",
+      "title": "Мелкоштучка",
       "parentId": null,
       "items": [
         {
@@ -782,7 +782,7 @@
     },
     {
       "id": "cat7",
-      "title": "МЕРЧИ",
+      "title": "Мерчи",
       "parentId": null,
       "items": [
         {
@@ -825,7 +825,7 @@
     },
     {
       "id": "cat8",
-      "title": "МИНИ КУХНЯ",
+      "title": "Мини Кухня",
       "parentId": null,
       "items": [
         {
@@ -868,7 +868,7 @@
     },
     {
       "id": "cat9",
-      "title": "МЯСНАЯ ВЫПЕЧКА",
+      "title": "Мясная Выпечка",
       "parentId": null,
       "items": [
         {
@@ -911,7 +911,7 @@
     },
     {
       "id": "cat10",
-      "title": "НАПИТКИ",
+      "title": "Напитки",
       "parentId": null,
       "items": [
         {
@@ -954,7 +954,7 @@
     },
     {
       "id": "cat11",
-      "title": "ПЕЧЕНЬЕ",
+      "title": "Печенье",
       "parentId": null,
       "items": [
         {
@@ -997,7 +997,7 @@
     },
     {
       "id": "cat12",
-      "title": "ПЕЧЕНЬЕ СЕТЫ В ПАКЕТЕ",
+      "title": "Печенье Сеты В Пакете",
       "parentId": null,
       "items": [
         {
@@ -1040,7 +1040,7 @@
     },
     {
       "id": "cat13",
-      "title": "ПИРОГИ",
+      "title": "Пироги",
       "parentId": null,
       "items": [
         {
@@ -1083,7 +1083,7 @@
     },
     {
       "id": "cat14",
-      "title": "ПИРОГИ alt",
+      "title": "Пироги Alt",
       "parentId": null,
       "items": [
         {
@@ -1126,7 +1126,7 @@
     },
     {
       "id": "cat15",
-      "title": "ПИРОЖЕНОЕ МИНИ",
+      "title": "Пироженое Мини",
       "parentId": null,
       "items": [
         {
@@ -1169,7 +1169,7 @@
     },
     {
       "id": "cat16",
-      "title": "ПИРОЖЕНОЕ",
+      "title": "Пироженое",
       "parentId": null,
       "items": [
         {
@@ -1212,7 +1212,7 @@
     },
     {
       "id": "cat17",
-      "title": "ПОЛУФАБРИКАТЫ",
+      "title": "Полуфабрикаты",
       "parentId": null,
       "items": [
         {
@@ -1255,7 +1255,7 @@
     },
     {
       "id": "cat18",
-      "title": "ПП НОВИНКА",
+      "title": "Пп Новинка",
       "parentId": null,
       "items": [
         {
@@ -1298,7 +1298,7 @@
     },
     {
       "id": "cat19",
-      "title": "ПРОЧЕЕ",
+      "title": "Прочее",
       "parentId": null,
       "items": [
         {
@@ -1341,7 +1341,7 @@
     },
     {
       "id": "cat20",
-      "title": "ПРЯМОУГОЛЬНЫЕ ТОРТЫ",
+      "title": "Прямоугольные Торты",
       "parentId": null,
       "items": [
         {
@@ -1384,7 +1384,7 @@
     },
     {
       "id": "cat21",
-      "title": "СВЕЧКИ",
+      "title": "Свечки",
       "parentId": null,
       "items": [
         {
@@ -1427,7 +1427,7 @@
     },
     {
       "id": "cat22",
-      "title": "СДОБА",
+      "title": "Сдоба",
       "parentId": null,
       "items": [
         {
@@ -1470,7 +1470,7 @@
     },
     {
       "id": "cat23",
-      "title": "СЕТЫ САФИЯ",
+      "title": "Сеты Сафия",
       "parentId": null,
       "items": [
         {
@@ -1513,7 +1513,7 @@
     },
     {
       "id": "cat24",
-      "title": "СЛОЙКА",
+      "title": "Слойка",
       "parentId": null,
       "items": [
         {
@@ -1556,7 +1556,7 @@
     },
     {
       "id": "cat25",
-      "title": "СПЕЦ. ЗАКАЗ",
+      "title": "Спец. Заказ",
       "parentId": null,
       "items": [
         {
@@ -1599,7 +1599,7 @@
     },
     {
       "id": "cat26",
-      "title": "ТАРТ",
+      "title": "Тарт",
       "parentId": null,
       "items": [
         {
@@ -1642,7 +1642,7 @@
     },
     {
       "id": "cat27",
-      "title": "ТАРТАЛЕТКИ",
+      "title": "Тарталетки",
       "parentId": null,
       "items": [
         {
@@ -1685,7 +1685,7 @@
     },
     {
       "id": "cat28",
-      "title": "ЧАК-ЧАК и ШТУЧНЫЕ",
+      "title": "Чак-Чак И Штучные",
       "parentId": null,
       "items": [
         {
@@ -1728,7 +1728,7 @@
     },
     {
       "id": "cat29",
-      "title": "ШТУЧНЫЕ ЭКЛЕРЫ",
+      "title": "Штучные Эклеры",
       "parentId": null,
       "items": [
         {
