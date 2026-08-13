@@ -4016,6 +4016,27 @@ function hasMeaningfulCatalogCategories(catalogCategories) {
   });
 }
 
+function getPreferredDefaultCategoryId() {
+  const preferredMatch = categories.find(category => category.id !== 'root' && /^круглые торты alt$/i.test(String(category.title || '').trim()));
+  if (preferredMatch) {
+    return preferredMatch.id;
+  }
+
+  const preferredCategory = [...categories].reverse().find(category => category.id !== 'root');
+  return preferredCategory ? preferredCategory.id : null;
+}
+
+function applyFinalMenuState() {
+  const preferredCategoryId = getPreferredDefaultCategoryId();
+  menuState = {
+    view: preferredCategoryId ? 'items' : 'folders',
+    categoryId: preferredCategoryId,
+    searchQuery: '',
+    history: []
+  };
+  renderAfterStateChange();
+}
+
 async function initializeCatalog() {
   clearCatalogLocalCache();
   categories = fallbackCatalog.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
@@ -4075,7 +4096,7 @@ async function loadCatalogFromServer() {
         categories = payload.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
         rebuildItemsCatalog();
         persistCatalogLocally();
-        renderAfterStateChange();
+        applyFinalMenuState();
         return;
       }
     } catch (error) {
@@ -4087,7 +4108,7 @@ async function loadCatalogFromServer() {
   }
   rebuildItemsCatalog();
   persistCatalogLocally();
-  renderAfterStateChange();
+  applyFinalMenuState();
 }
 
 async function saveCatalogToServer() {
