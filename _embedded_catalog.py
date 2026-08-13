@@ -2685,6 +2685,1888 @@ EMBEDDED_CATALOG_JSON = r"""{
           "modifiers": []
         }
       ]
+    },
+    {
+      "id": "cat-pirozhnye",
+      "title": "Пирожные",
+      "parentId": null,
+      "items": [
+        {
+          "id": "pyr-1",
+          "name": "Берри кейк пирожное",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-2",
+          "name": "Брауни пирожное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-3",
+          "name": "Винни детское пирожное",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-4",
+          "name": "Детское пирожное Мишка",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-5",
+          "name": "Джульетта рулет кусок",
+          "price": 1800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-6",
+          "name": "Ириска рулет кусок",
+          "price": 1800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-7",
+          "name": "Медовый стакан",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-8",
+          "name": "Пирог Малиново - Фруктовый",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-9",
+          "name": "Пирожное Вафельное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-10",
+          "name": "Пирожное Меренговый",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-11",
+          "name": "Пирожное Меренговый с Фисташками",
+          "price": 1550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-12",
+          "name": "Пирожное Три шоколада",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-13",
+          "name": "Пирожное Фисташка - Клубника",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-14",
+          "name": "Пирожное Фисташково - Малиновое",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-15",
+          "name": "Пирожное Фундучно - Яблочное",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-16",
+          "name": "Сникерс пирожное",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-17",
+          "name": "Сникерс рулет кусок",
+          "price": 1850,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-18",
+          "name": "Тирамису пирожное",
+          "price": 1400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-19",
+          "name": "Ягодная опера пирожное",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pyr-20",
+          "name": "Ягодный лабне пирожное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-polufabrikaty",
+      "title": "Полуфабрикаты",
+      "parentId": null,
+      "items": []
+    },
+    {
+      "id": "cat-pirozhnoe-main",
+      "title": "Пирожное",
+      "parentId": null,
+      "items": [
+        {
+          "id": "pm-1",
+          "name": "Берри кейк пирожное",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-2",
+          "name": "Брауни пирожное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-3",
+          "name": "Винни детское пирожное",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-4",
+          "name": "Детское пирожное Мишка",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-5",
+          "name": "Джульетта рулет кусок",
+          "price": 1800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-6",
+          "name": "Ириска рулет кусок",
+          "price": 1800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-7",
+          "name": "Медовый стакан",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-8",
+          "name": "Пирог Малиново - Фруктовый",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-9",
+          "name": "Пирожное Вафельное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-10",
+          "name": "Пирожное Меренговый",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-11",
+          "name": "Пирожное Меренговый с Фисташками",
+          "price": 1550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-12",
+          "name": "Пирожное Три шоколада",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-13",
+          "name": "Пирожное Фисташка - Клубника",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-14",
+          "name": "Пирожное Фисташково - Малиновое",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-15",
+          "name": "Пирожное Фундучно - Яблочное",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-16",
+          "name": "Сникерс пирожное",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-17",
+          "name": "Сникерс рулет кусок",
+          "price": 1850,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-18",
+          "name": "Тирамису пирожное",
+          "price": 1400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-19",
+          "name": "Ягодная опера пирожное",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pm-20",
+          "name": "Ягодный лабне пирожное",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-polufab",
+      "title": "Полуфабрикаты",
+      "parentId": null,
+      "items": [
+        {
+          "id": "pf-1",
+          "name": "Вареники с картошкой",
+          "price": 900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-2",
+          "name": "Голубцы с капустой",
+          "price": 2200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-3",
+          "name": "Долма с говядиной",
+          "price": 2700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-4",
+          "name": "Нагетсы (12шт) Кз",
+          "price": 1500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-5",
+          "name": "Пельмени с мясом баранины",
+          "price": 2400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-6",
+          "name": "Пельмени с мясом говядины",
+          "price": 2400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-7",
+          "name": "Пельмени цветные с мясом говядины",
+          "price": 2800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-8",
+          "name": "Сырники",
+          "price": 1450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-9",
+          "name": "Тесто слоёное для катламы",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-10",
+          "name": "Тесто слоёное для самсы",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pf-11",
+          "name": "Чебуреки с мясом",
+          "price": 1500,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-pp-novinka",
+      "title": "ПП Новинка",
+      "parentId": null,
+      "items": [
+        {
+          "id": "ppn-batch",
+          "name": "Ореховый батончик энергетический",
+          "price": 850,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppn-choco",
+          "name": "ПП Шоколад для Сан-Себастьян",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-pp-pirozhnoe",
+      "title": "Пирожное ПП",
+      "parentId": "cat-pp-novinka",
+      "items": [
+        {
+          "id": "ppp-1",
+          "name": "Картошка ПП",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-2",
+          "name": "Лесная Ягода пирожное ПП",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-3",
+          "name": "Малиновое пирожное ПП",
+          "price": 1500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-4",
+          "name": "Медовое пирожное ПП",
+          "price": 1800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-5",
+          "name": "Наполеон пирожное ПП",
+          "price": 1900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-6",
+          "name": "ПП Пирожное Птичье молоко",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-7",
+          "name": "ПП Пирожное Сникерс",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-8",
+          "name": "ПП Сан-Себастьян чизкейк",
+          "price": 1900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ppp-9",
+          "name": "Чай Матча пирожное ПП",
+          "price": 1700,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-prochee",
+      "title": "Прочее",
+      "parentId": null,
+      "items": [
+        {
+          "id": "pr-kroshka",
+          "name": "Крошка",
+          "price": 0,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pr-paket05",
+          "name": "Пакет премиум 0,5",
+          "price": 900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pr-paketbig",
+          "name": "Пакет премиум большой",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-posuda",
+      "title": "Посуда для гостей",
+      "parentId": "cat-prochee",
+      "items": [
+        {
+          "id": "pos-1",
+          "name": "Вазочка фарфор",
+          "price": 1260,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-2",
+          "name": "Вилка для гостей",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-3",
+          "name": "Гибралтар стакан 0,3",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-4",
+          "name": "Десерт вилка",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-5",
+          "name": "Ложка для гостей",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-6",
+          "name": "Ложка латте",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-7",
+          "name": "Минажница",
+          "price": 2050,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-8",
+          "name": "Салфетница фарфор",
+          "price": 1250,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-9",
+          "name": "Сахарница фарфоровая",
+          "price": 1250,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-10",
+          "name": "Стакан Айриш",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-11",
+          "name": "Стакан Рокс",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-12",
+          "name": "Чайник нержавейка",
+          "price": 12800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-13",
+          "name": "Чайник фарфор",
+          "price": 3150,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-14",
+          "name": "Чашка дабл капучино",
+          "price": 2150,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-15",
+          "name": "Чашка для чая, американо, капучино",
+          "price": 1950,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pos-16",
+          "name": "Чашка для эспрессо",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-hleba",
+      "title": "Хлеба Австрии",
+      "parentId": "cat-prochee",
+      "items": [
+        {
+          "id": "hleb-1",
+          "name": "Бородинский хлеб",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "hleb-2",
+          "name": "Славянский аромат хлеб",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "hleb-3",
+          "name": "Спорт Актив хлеб",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "hleb-4",
+          "name": "Тартин хлеб",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-tort-rect",
+      "title": "Прямоугольные Торты",
+      "parentId": null,
+      "items": [
+        {
+          "id": "tr-1",
+          "name": "Афганка New торт",
+          "price": 15200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-2",
+          "name": "Дари торт",
+          "price": 16000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-3",
+          "name": "Итальяно торт",
+          "price": 14400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-4",
+          "name": "Карамельный медовый прямоуг торт",
+          "price": 15200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-5",
+          "name": "Лимонный New торт",
+          "price": 18000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-6",
+          "name": "Малинка торт",
+          "price": 14400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-7",
+          "name": "Маркиза торт",
+          "price": 18000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-8",
+          "name": "Махровый прямоугольный торт",
+          "price": 11600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-9",
+          "name": "Меренговый прямоугольный",
+          "price": 10900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-10",
+          "name": "Микадо торт прямоугольный",
+          "price": 18000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-11",
+          "name": "Милано торт",
+          "price": 18000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-12",
+          "name": "Наполеон торт",
+          "price": 12800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-13",
+          "name": "Ореховый медовый New торт",
+          "price": 15200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-14",
+          "name": "Саксония торт",
+          "price": 16000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-15",
+          "name": "Сникерс торт прямоугольный",
+          "price": 19600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-16",
+          "name": "Творожно-бисквитный торт",
+          "price": 15200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-17",
+          "name": "Торт Наполеон Шоколадный",
+          "price": 14800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-18",
+          "name": "Торт Спартак прямоугольный",
+          "price": 16800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-19",
+          "name": "Фруктовый торт прямоугольный",
+          "price": 17200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-20",
+          "name": "Черный принц торт прямоугольный",
+          "price": 19600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-21",
+          "name": "Шок банановый торт прямоугольный",
+          "price": 19200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-22",
+          "name": "Шок медовый торт",
+          "price": 15200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-23",
+          "name": "Якобс торт",
+          "price": 19200,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-svechi",
+      "title": "Свечки",
+      "parentId": null,
+      "items": [
+        {
+          "id": "sv-1",
+          "name": "Свеча длинная цветная 6шт",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-2",
+          "name": "Свечи блески 6шт",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-3",
+          "name": "Свечи набор 6шт",
+          "price": 470,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-4",
+          "name": "Свечи спираль 12шт",
+          "price": 680,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-5",
+          "name": "Свечка Радуга",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-6",
+          "name": "Свечка Фейерверк",
+          "price": 1000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-7",
+          "name": "Свечки бенто",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-8",
+          "name": "Свечки набор 10шт",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-9",
+          "name": "Свечки СДР (буквы)",
+          "price": 1000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-10",
+          "name": "Свечки спираль 6шт",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-11",
+          "name": "Свечки цветные крученные 8шт",
+          "price": 470,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-12",
+          "name": "Топпер",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-13",
+          "name": "Хлопушка маль",
+          "price": 1310,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-14",
+          "name": "Хлопушка средние",
+          "price": 2200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-15",
+          "name": "Цифра Грани №0",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-16",
+          "name": "Цифра Грани №1",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-17",
+          "name": "Цифра Грани №2",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-18",
+          "name": "Цифра Грани №3",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-19",
+          "name": "Цифра Грани №4",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-20",
+          "name": "Цифра Грани №5",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-21",
+          "name": "Цифра Грани №6",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-22",
+          "name": "Цифра Грани №7",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-23",
+          "name": "Цифра Грани №8",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-24",
+          "name": "Цифра Грани №9",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-25",
+          "name": "Цифра Золотой №0",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-26",
+          "name": "Цифра Золотой №1",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-27",
+          "name": "Цифра Золотой №2",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-28",
+          "name": "Цифра Золотой №3",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-29",
+          "name": "Цифра Золотой №4",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-30",
+          "name": "Цифра Золотой №5",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-31",
+          "name": "Цифра Золотой №6",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-32",
+          "name": "Цифра Золотой №7",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-33",
+          "name": "Цифра Золотой №8",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-34",
+          "name": "Цифра Золотой №9",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-35",
+          "name": "Цифра с Короной №0",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-36",
+          "name": "Цифра с Короной №1",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-37",
+          "name": "Цифра с Короной №2",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-38",
+          "name": "Цифра с Короной №3",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-39",
+          "name": "Цифра с Короной №4",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-40",
+          "name": "Цифра с Короной №5",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-41",
+          "name": "Цифра с Короной №6",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-42",
+          "name": "Цифра с Короной №7",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-43",
+          "name": "Цифра с Короной №8",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-44",
+          "name": "Цифра с Короной №9",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-45",
+          "name": "Цифра Цветная №0",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-46",
+          "name": "Цифра Цветная №1",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-47",
+          "name": "Цифра Цветная №2",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-48",
+          "name": "Цифра Цветная №3",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-49",
+          "name": "Цифра Цветная №4",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-50",
+          "name": "Цифра Цветная №5",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-51",
+          "name": "Цифра Цветная №6",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-52",
+          "name": "Цифра Цветная №7",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-53",
+          "name": "Цифра Цветная №8",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-54",
+          "name": "Цифра Цветная №9",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-sdoba",
+      "title": "Сдоба",
+      "parentId": null,
+      "items": [
+        {
+          "id": "sdo-1",
+          "name": "Булочка с абрикосом и миндалём",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-2",
+          "name": "Булочка с вишней",
+          "price": 550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-3",
+          "name": "Булочка с маком",
+          "price": 550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-4",
+          "name": "Булочка с малиной",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-5",
+          "name": "Булочка с орехом",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-6",
+          "name": "Булочка с сосиской",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-7",
+          "name": "Булочка с яблоком",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-8",
+          "name": "Булочка со сгущёнкой",
+          "price": 550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-9",
+          "name": "Булочка творожный банан",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-10",
+          "name": "Ватрушки",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-11",
+          "name": "Конверт",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-12",
+          "name": "Расстегай с капустой",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-13",
+          "name": "Расстегай с картошкой",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-14",
+          "name": "Расстегай с мясом",
+          "price": 550,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-15",
+          "name": "Расстегай с яйцом",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-sety-safiya",
+      "title": "Сеты Сафия",
+      "parentId": null,
+      "items": [
+        {
+          "id": "ss-1",
+          "name": "Баунти мини печенье сет",
+          "price": 1000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-2",
+          "name": "Буше Ассорти Кз",
+          "price": 3800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-3",
+          "name": "Буше молочный мини сет",
+          "price": 2000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-4",
+          "name": "Буше шоколадный мини сет",
+          "price": 2000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-5",
+          "name": "Гречневые хлебцы сет (200гр)",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-6",
+          "name": "Кета печенье Сет",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-7",
+          "name": "Кукес сет Б",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-8",
+          "name": "Курабье печенье Сет 0,25",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-9",
+          "name": "Лочира мини сет",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-10",
+          "name": "Луна печенье Сет 0,25",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-11",
+          "name": "Луна печенье Сет 0,5",
+          "price": 2200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-12",
+          "name": "Маленький эклер большой сет",
+          "price": 2500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-13",
+          "name": "Маленький эклер мини сет",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-14",
+          "name": "Мармелад сет",
+          "price": 1400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-15",
+          "name": "Мини трубочки большой сет",
+          "price": 2500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-16",
+          "name": "Мини трубочки мини сет",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-17",
+          "name": "Овсянка мини печенье сет",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-18",
+          "name": "Ракушки печенье Сет 0,2",
+          "price": 1500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-19",
+          "name": "Ракушки печенье Сет 0,5",
+          "price": 2900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-20",
+          "name": "Рисовые хлебцы сет (200гр)",
+          "price": 1600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-21",
+          "name": "Рогалики с вишней Сет 0,2",
+          "price": 1350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-22",
+          "name": "Рогалики с вишней Сет 0,5",
+          "price": 2900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-23",
+          "name": "Рогалики с орехом Сет",
+          "price": 1650,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-24",
+          "name": "Рогалики со сгущёнкой Сет 0,2",
+          "price": 1350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-25",
+          "name": "Рогалики со сгущёнкой Сет 0,5",
+          "price": 2900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-26",
+          "name": "Сушки мини сет",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-27",
+          "name": "Турецкая пахлава мини сет",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-28",
+          "name": "Турецкий чак чак сет",
+          "price": 2900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-29",
+          "name": "Цветной эклер большой сет",
+          "price": 3900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-30",
+          "name": "Цветной эклер мини сет",
+          "price": 2000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-31",
+          "name": "Шок палочка большой сет",
+          "price": 2900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ss-32",
+          "name": "Шок палочки мини сет",
+          "price": 1500,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-slojka",
+      "title": "Слойка",
+      "parentId": null,
+      "items": [
+        {
+          "id": "slo-1",
+          "name": "Косички с маком",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-2",
+          "name": "Косички с орехом",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-3",
+          "name": "Круассан Классический",
+          "price": 900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-4",
+          "name": "Круассан Миндальный",
+          "price": 1350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-5",
+          "name": "Круассан Фисташковый",
+          "price": 1850,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-6",
+          "name": "Круассан Шоколадный",
+          "price": 1150,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-7",
+          "name": "Круассан Ягодный",
+          "price": 1250,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-8",
+          "name": "Слойка с сосиской",
+          "price": 750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-9",
+          "name": "Хачапури с колбасой",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-10",
+          "name": "Хачапури с сыром",
+          "price": 700,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "slo-11",
+          "name": "Шоколадный Паин",
+          "price": 1200,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-spec-zakaz",
+      "title": "Спец.заказ",
+      "parentId": null,
+      "items": [
+        {
+          "id": "sz-1",
+          "name": "Мастика №1 спец",
+          "price": 2600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sz-2",
+          "name": "Фото Принт 10 спец",
+          "price": 1000,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sz-3",
+          "name": "Фото Принт 45 спец",
+          "price": 2500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sz-4",
+          "name": "Фото Принт 55 спец",
+          "price": 3000,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-tart",
+      "title": "Тарт",
+      "parentId": null,
+      "items": [
+        {
+          "id": "tart-1",
+          "name": "Вишенка тарт",
+          "price": 5900,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-tartaletki",
+      "title": "Тарталетки",
+      "parentId": null,
+      "items": [
+        {
+          "id": "talt-1",
+          "name": "Блэк форест тарталетка",
+          "price": 1300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "talt-2",
+          "name": "Вольтер мини",
+          "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "talt-3",
+          "name": "Мини тарталетка",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "talt-4",
+          "name": "Тарталетки большие пирожное",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "talt-5",
+          "name": "Шок мини тарталетка",
+          "price": 400,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-chak-chak",
+      "title": "Чак-Чак и Штучные",
+      "parentId": null,
+      "items": [
+        {
+          "id": "chch-1",
+          "name": "Муравейник",
+          "price": 300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chch-2",
+          "name": "Орешки упаковка",
+          "price": 3000,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-chizkejki",
+      "title": "Чизкейки",
+      "parentId": null,
+      "items": [
+        {
+          "id": "chiz-1",
+          "name": "Лотус чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-2",
+          "name": "Медовый чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-3",
+          "name": "Нью Йорк чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-4",
+          "name": "Орео чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-5",
+          "name": "Сан себастьян Шоколадный",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-6",
+          "name": "Сан-себастьян Тирамису",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-7",
+          "name": "Сан-Себастьян чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-8",
+          "name": "Шок Сан-Себастьян",
+          "price": 350,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "chiz-9",
+          "name": "Экзотик чизкейк",
+          "price": 1750,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-eklery",
+      "title": "Штучные Эклеры",
+      "parentId": null,
+      "items": [
+        {
+          "id": "ek-1",
+          "name": "Эклер ванильный с малиной",
+          "price": 900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ek-2",
+          "name": "Эклер Лотус-карамель",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ek-3",
+          "name": "Эклер рафаелло",
+          "price": 1200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ek-4",
+          "name": "Эклер тирамису",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ek-5",
+          "name": "Эклер Фиташка-вишня",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "ek-6",
+          "name": "Эклер Шоколад-Нутелла",
+          "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-paket-final",
+      "title": "Пакет",
+      "parentId": null,
+      "items": [
+        {
+          "id": "pk-1",
+          "name": "Пакет",
+          "price": 15,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
     }
   ]
 }"""
