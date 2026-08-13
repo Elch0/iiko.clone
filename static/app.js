@@ -4030,8 +4030,8 @@ function applyFinalMenuState() {
   const preferredCategoryId = getPreferredDefaultCategoryId();
   currentCategoryId = preferredCategoryId || categories.find(category => category.id !== 'root')?.id || null;
   menuState = {
-    view: preferredCategoryId ? 'items' : 'folders',
-    categoryId: preferredCategoryId || currentCategoryId,
+    view: 'folders',
+    categoryId: null,
     searchQuery: '',
     history: []
   };
