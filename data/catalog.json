@@ -2686,159 +2686,6 @@
       ]
     },
     {
-      "id": "cat-pirozhnye",
-      "title": "Пирожные",
-      "parentId": null,
-      "items": [
-        {
-          "id": "pyr-1",
-          "name": "Берри кейк пирожное",
-          "price": 1650,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-2",
-          "name": "Брауни пирожное",
-          "price": 1450,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-3",
-          "name": "Винни детское пирожное",
-          "price": 1700,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-4",
-          "name": "Детское пирожное Мишка",
-          "price": 1700,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-5",
-          "name": "Джульетта рулет кусок",
-          "price": 1800,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-6",
-          "name": "Ириска рулет кусок",
-          "price": 1800,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-7",
-          "name": "Медовый стакан",
-          "price": 1650,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-8",
-          "name": "Пирог Малиново - Фруктовый",
-          "price": 700,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-9",
-          "name": "Пирожное Вафельное",
-          "price": 1450,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-10",
-          "name": "Пирожное Меренговый",
-          "price": 1300,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-11",
-          "name": "Пирожное Меренговый с Фисташками",
-          "price": 1550,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-12",
-          "name": "Пирожное Три шоколада",
-          "price": 1700,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-13",
-          "name": "Пирожное Фисташка - Клубника",
-          "price": 1950,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-14",
-          "name": "Пирожное Фисташково - Малиновое",
-          "price": 1950,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-15",
-          "name": "Пирожное Фундучно - Яблочное",
-          "price": 1950,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-16",
-          "name": "Сникерс пирожное",
-          "price": 1600,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-17",
-          "name": "Сникерс рулет кусок",
-          "price": 1850,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-18",
-          "name": "Тирамису пирожное",
-          "price": 1400,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-19",
-          "name": "Ягодная опера пирожное",
-          "price": 1600,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pyr-20",
-          "name": "Ягодный лабне пирожное",
-          "price": 1450,
-          "modifier": "",
-          "modifiers": []
-        }
-      ]
-    },
-    {
-      "id": "cat-polufabrikaty",
-      "title": "Полуфабрикаты",
-      "parentId": null,
-      "items": []
-    },
-    {
       "id": "cat-pirozhnoe-main",
       "title": "Пирожное",
       "parentId": null,
@@ -3183,6 +3030,13 @@
           "id": "pr-paketbig",
           "name": "Пакет премиум большой",
           "price": 1100,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "pr-paket",
+          "name": "Пакет",
+          "price": 15,
           "modifier": "",
           "modifiers": []
         }
@@ -4548,20 +4402,6 @@
           "id": "ek-6",
           "name": "Эклер Шоколад-Нутелла",
           "price": 1100,
-          "modifier": "",
-          "modifiers": []
-        }
-      ]
-    },
-    {
-      "id": "cat-paket-final",
-      "title": "Пакет",
-      "parentId": null,
-      "items": [
-        {
-          "id": "pk-1",
-          "name": "Пакет",
-          "price": 15,
           "modifier": "",
           "modifiers": []
         }
