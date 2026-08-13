@@ -4027,8 +4027,7 @@ function getPreferredDefaultCategoryId() {
 }
 
 function applyFinalMenuState() {
-  const preferredCategoryId = getPreferredDefaultCategoryId();
-  currentCategoryId = preferredCategoryId || categories.find(category => category.id !== 'root')?.id || null;
+  currentCategoryId = null;
   menuState = {
     view: 'folders',
     categoryId: null,
@@ -4449,7 +4448,10 @@ function saveReceipts() {
 
 function getCurrentCategory() {
   const targetId = menuState.categoryId || currentCategoryId;
-  return categories.find(category => category.id === targetId) || categories.find(category => category.id !== 'root') || null;
+  if (!targetId) {
+    return null;
+  }
+  return categories.find(category => category.id === targetId) || null;
 }
 
 function setMenuEditing(value) {
