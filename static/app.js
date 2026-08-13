@@ -4284,14 +4284,14 @@ function isSafiaBarContext(category, item) {
     cat = categories.find(c => c.id === item.categoryId) || null;
   }
 
-  // Walk up the parent chain to see if any ancestor has title 'Safia БАР'
+  // Walk up the parent chain to see if any ancestor has title 'Safia Бар'
   while (cat) {
-    if (String(cat.title).trim() === 'Safia БАР') return true;
+    if (String(cat.title).trim() === 'Safia Бар') return true;
     cat = categories.find(c => c.id === cat.parentId) || null;
   }
 
   // As a last resort, check item's categoryTitle if present
-  if (String(item?.categoryTitle || '').trim() === 'Safia БАР') return true;
+  if (String(item?.categoryTitle || '').trim() === 'Safia Бар') return true;
   return false;
 }
 
