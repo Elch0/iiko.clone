@@ -4027,10 +4027,13 @@ function hasMeaningfulCatalogCategories(catalogCategories) {
 }
 
 async function initializeCatalog() {
+  console.log('>>> initializeCatalog() starting');
   clearCatalogLocalCache();
   categories = fallbackCatalog.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
+  console.log('Loaded fallback catalog with', categories.length, 'categories');
   rebuildItemsCatalog();
   await loadCatalogFromServer();
+  console.log('initializeCatalog() completed, categories now:', categories.length);
 }
 
 function rebuildItemsCatalog() {
@@ -4056,6 +4059,7 @@ function isUsableCatalogPayload(payload) {
 }
 
 async function loadCatalogFromServer() {
+  console.log('>>> loadCatalogFromServer() starting');
   const catalogSources = [];
   if (remoteCatalogUrl) {
     catalogSources.push(remoteCatalogUrl);
@@ -4066,9 +4070,11 @@ async function loadCatalogFromServer() {
   // GitHub raw fetch is intentionally disabled to avoid blocked cross-origin requests.
   // The app server provides the same catalog data through /api/catalog.
   if (!catalogSources.length) {
+    console.log('No catalog sources configured');
     return;
   }
 
+  console.log('Trying catalog sources:', catalogSources);
   for (const sourceUrl of catalogSources) {
     try {
       const response = await fetch(sourceUrl, {
@@ -4078,10 +4084,15 @@ async function loadCatalogFromServer() {
           'Pragma': 'no-cache'
         }
       });
-      if (!response.ok) continue;
+      if (!response.ok) {
+        console.log('Source returned status:', response.status, 'skipping', sourceUrl);
+        continue;
+      }
       const payload = await response.json();
+      console.log('Fetched from', sourceUrl, '- received', payload.categories?.length, 'categories');
       if (isUsableCatalogPayload(payload)) {
         categories = payload.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
+        console.log('Catalog from', sourceUrl, 'is usable - loaded', categories.length, 'categories');
         rebuildItemsCatalog();
         persistCatalogLocally();
         renderAfterStateChange();
@@ -4093,6 +4104,7 @@ async function loadCatalogFromServer() {
   }
 
   if (!hasMeaningfulCatalogCategories(categories)) {
+    console.log('Using fallback catalog');
     categories = fallbackCatalog.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
   }
   rebuildItemsCatalog();
@@ -5602,10 +5614,13 @@ function buildMenuEntries() {
   }
 
   const parentCategory = getCurrentCategory();
+  console.log('buildMenuEntries: parentCategory:', parentCategory?.title, 'menuState.view:', menuState.view);
   const rootCategory = categories.find(cat => cat.id === 'root');
   const visibleCategories = categories
     .filter(category => category.id !== 'root' && category.parentId === (parentCategory?.id || null))
     .sort(compareByName);
+  
+  console.log('Found', visibleCategories.length, 'visible subcategories');
 
   let entries;
   let itemsCategoryForEditing = parentCategory;
@@ -5630,8 +5645,15 @@ function buildMenuEntries() {
 }
 
 function renderFolders() {
+  console.log('renderFolders() called, categories count:', categories.length, 'folderList element:', !!elements.folderList);
+  if (!elements.folderList) {
+    console.error('ERROR: folderList element not found!');
+    return;
+  }
+  
   elements.folderList.innerHTML = '';
   const { entries, itemsCategoryForEditing } = buildMenuEntries();
+  console.log('buildMenuEntries returned:', entries.length, 'entries');
   const pageSize = 32;
   const totalPages = Math.max(1, Math.ceil(entries.length / pageSize));
   const visibleEntries = entries.slice(0, Math.min(pageSize, entries.length));
@@ -5650,6 +5672,7 @@ function renderFolders() {
   });
   folderGrid.appendChild(fragment);
   elements.folderList.appendChild(folderGrid);
+  console.log('Menu rendered successfully with', visibleEntries.length, 'visible entries');
 
   if (totalPages > 1) {
     const pager = document.createElement('div');
