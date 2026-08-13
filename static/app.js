@@ -4187,8 +4187,6 @@ async function syncCategoryToServer(category) {
   }
 }
 
-initializeCatalog();
-
 const storageKey = receiptStorageKey;
 let currentCategoryId = categories[0].id;
 let activePage = 'create';
@@ -6327,8 +6325,7 @@ function init() {
   if (elements.menuEditAddButton) {
     elements.menuEditAddButton.classList.toggle('hidden', !isAdminMode);
   }
-  loadCatalogFromServer();
-  renderAfterStateChange();
+  initializeCatalog();
   renderSelectedItems();
   renderReceipts();
 }
