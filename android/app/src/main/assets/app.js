@@ -1,4 +1,4 @@
-﻿const { debounce, defer, memoize } = (typeof window !== 'undefined' && window.iikoUtils) ? window.iikoUtils : require('./utils');
+const { debounce, defer, memoize } = (typeof window !== 'undefined' && window.iikoUtils) ? window.iikoUtils : require('./utils');
 
 const paymentTypes = [
   { id: 'kaspi', label: 'Kaspi', color: 'kaspi' },
@@ -3964,9 +3964,14 @@ const adminToken = 'iiko-admin-token';
 let categories = [];
 let itemsCatalog = [];
 const isAndroidCapacitor = typeof window !== 'undefined' && /Android/i.test(window.navigator?.userAgent || '');
-const githubCatalogUrl = 'https://raw.githubusercontent.com/Elch0/iiko.clone/main/data/catalog.json';
-const defaultRemoteCatalogUrl = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null')
-  ? `${window.location.origin}/api/catalog`
+// GitHub raw URL is intentionally excluded here: browser CORS blocks it on Render,
+// and the app API is the canonical source for catalog editing.
+const githubCatalogUrl = '';
+const locationOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null')
+  ? window.location.origin
+  : '';
+const defaultRemoteCatalogUrl = locationOrigin
+  ? `${locationOrigin}/api/catalog`
   : 'http://localhost:3000/api/catalog';
 const androidFallbackCatalogUrl = 'http://10.0.2.2:3000/api/catalog';
 const configuredRemoteCatalogUrl = (typeof window !== 'undefined' && window.__REMOTE_CATALOG_URL__) ? String(window.__REMOTE_CATALOG_URL__).trim() : '';
@@ -3976,7 +3981,7 @@ const remoteCatalogUrl = configuredRemoteCatalogUrl && !/(your-render-app|your-s
 const configuredApiBaseUrl = (typeof window !== 'undefined' && window.__API_BASE_URL__) ? String(window.__API_BASE_URL__).replace(/\/$/, '') : '';
 const apiBaseUrl = configuredApiBaseUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredApiBaseUrl)
   ? configuredApiBaseUrl
-  : (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin.replace(/\/$/, '') : 'https://iiko-clone-1.onrender.com');
+  : (typeof window !== 'undefined' && locationOrigin ? locationOrigin.replace(/\/$/, '') : 'https://iiko-clone-1.onrender.com');
 const adminModeFlag = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search).get('admin') === '1' : false;
 const storedAdminMode = (typeof window !== 'undefined' && window.localStorage) ? window.localStorage.getItem(adminModeStorageKey) === 'true' : false;
 let isAdminMode = adminModeFlag || storedAdminMode;
@@ -3995,7 +4000,7 @@ function persistCatalogLocally() {
   try {
     window.localStorage.setItem(catalogStorageKey, JSON.stringify({ categories }));
   } catch (error) {
-    }
+  }
 }
 
 function clearCatalogLocalCache() {
@@ -4003,7 +4008,7 @@ function clearCatalogLocalCache() {
   try {
     window.localStorage.removeItem(catalogStorageKey);
   } catch (error) {
-    }
+  }
 }
 
 function hasMeaningfulCatalogCategories(catalogCategories) {
@@ -4056,13 +4061,11 @@ async function loadCatalogFromServer() {
   if (apiBaseUrl) {
     catalogSources.push(`${apiBaseUrl}/api/catalog`);
   }
-  if (githubCatalogUrl) {
-    catalogSources.push(githubCatalogUrl);
-  }
+  // GitHub raw fetch is intentionally disabled to avoid blocked cross-origin requests.
+  // The app server provides the same catalog data through /api/catalog.
   if (!catalogSources.length) {
     return;
   }
-
   for (const sourceUrl of catalogSources) {
     try {
       const response = await fetch(sourceUrl, {
@@ -4072,7 +4075,9 @@ async function loadCatalogFromServer() {
           'Pragma': 'no-cache'
         }
       });
-      if (!response.ok) continue;
+      if (!response.ok) {
+        continue;
+      }
       const payload = await response.json();
       if (isUsableCatalogPayload(payload)) {
         categories = payload.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
@@ -4082,7 +4087,7 @@ async function loadCatalogFromServer() {
         return;
       }
     } catch (error) {
-      }
+    }
   }
 
   if (!hasMeaningfulCatalogCategories(categories)) {
@@ -4109,7 +4114,9 @@ async function saveCatalogToServer() {
       body: JSON.stringify({ categories })
     });
     if (!response.ok) {
-      throw new Error('Failed to save catalog');
+      const errorData = await response.json().catch(() => ({}));
+      const errorMsg = errorData.error || `Failed to save catalog (${response.status})`;
+      throw new Error(errorMsg);
     }
     persistCatalogLocally();
     if (pendingCatalogSave) {
@@ -4117,7 +4124,8 @@ async function saveCatalogToServer() {
       await saveCatalogToServer();
     }
   } catch (error) {
-    } finally {
+    alert(`Ошибка сохранения меню: ${error.message}`);
+  } finally {
     catalogSyncing = false;
   }
 }
@@ -4125,7 +4133,7 @@ async function saveCatalogToServer() {
 async function syncItemToServer(item) {
   if (!isAdminMode) return;
   try {
-    await fetch(`${apiBaseUrl}/api/items/${item.id}`, {
+    const response = await fetch(`${apiBaseUrl}/api/items/${item.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -4133,15 +4141,21 @@ async function syncItemToServer(item) {
       },
       body: JSON.stringify(item)
     });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMsg = errorData.error || `Failed to save item (${response.status})`;
+      throw new Error(errorMsg);
+    }
     persistCatalogLocally();
   } catch (error) {
-    }
+    alert(`Ошибка сохранения товара: ${error.message}`);
+  }
 }
 
 async function syncCategoryToServer(category) {
   if (!isAdminMode) return;
   try {
-    await fetch(`${apiBaseUrl}/api/categories/${category.id}`, {
+    const response = await fetch(`${apiBaseUrl}/api/categories/${category.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -4149,9 +4163,15 @@ async function syncCategoryToServer(category) {
       },
       body: JSON.stringify({ title: category.title })
     });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMsg = errorData.error || `Failed to save category (${response.status})`;
+      throw new Error(errorMsg);
+    }
     persistCatalogLocally();
   } catch (error) {
-    }
+    alert(`Ошибка сохранения категории: ${error.message}`);
+  }
 }
 
 initializeCatalog();
@@ -5605,6 +5625,10 @@ function buildMenuEntries() {
 }
 
 function renderFolders() {
+  if (!elements.folderList) {
+    return;
+  }
+  
   elements.folderList.innerHTML = '';
   const { entries, itemsCategoryForEditing } = buildMenuEntries();
   const pageSize = 32;
