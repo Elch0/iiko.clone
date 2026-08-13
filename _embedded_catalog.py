@@ -1641,69 +1641,7 @@ EMBEDDED_CATALOG_JSON = r"""{
       "id": "cat-torty",
       "title": "Круглые торты",
       "parentId": null,
-      "items": []
-    },
-    {
-      "id": "cat-torty-mini",
-      "title": "Круглые торты мини",
-      "parentId": "cat-torty",
       "items": [
-        {
-          "id": "tm-1",
-          "name": "Берри кейк мини торт",
-          "price": 9200,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-2",
-          "name": "Киевский Рожок мини",
-          "price": 12900,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-3",
-          "name": "Кофе тоффи мини торт",
-          "price": 8900,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-4",
-          "name": "Лесной орех мини торт",
-          "price": 9500,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-5",
-          "name": "Медовый milk slice мини торт",
-          "price": 6500,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-6",
-          "name": "Рафаэлло торт мини",
-          "price": 8900,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-7",
-          "name": "Тирамису мини торт",
-          "price": 12500,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "tm-8",
-          "name": "Шок Банан мини торт",
-          "price": 9900,
-          "modifier": "",
-          "modifiers": []
-        },
         {
           "id": "t-1",
           "name": "Адмирал торт круглый",
@@ -1974,6 +1912,69 @@ EMBEDDED_CATALOG_JSON = r"""{
           "id": "t-39",
           "name": "Ягодно - творожный торт NEW",
           "price": 7900,
+          "modifier": "",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "id": "cat-torty-mini",
+      "title": "Круглые торты мини",
+      "parentId": "cat-torty",
+      "items": [
+        {
+          "id": "tm-1",
+          "name": "Берри кейк мини торт",
+          "price": 9200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-2",
+          "name": "Киевский Рожок мини",
+          "price": 12900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-3",
+          "name": "Кофе тоффи мини торт",
+          "price": 8900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-4",
+          "name": "Лесной орех мини торт",
+          "price": 9500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-5",
+          "name": "Медовый milk slice мини торт",
+          "price": 6500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-6",
+          "name": "Рафаэлло торт мини",
+          "price": 8900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-7",
+          "name": "Тирамису мини торт",
+          "price": 12500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-8",
+          "name": "Шок Банан мини торт",
+          "price": 9900,
           "modifier": "",
           "modifiers": []
         }
