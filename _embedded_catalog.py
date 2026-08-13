@@ -1,4 +1,5 @@
-{
+# Auto-generated embedded catalog for Render fallback
+EMBEDDED_CATALOG_JSON = r"""{
   "categories": [
     {
       "title": "GitHub-backed test",
@@ -1771,4 +1772,4 @@
     }
   ],
   "items": []
-}
+}"""

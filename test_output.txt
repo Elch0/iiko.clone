@@ -1,0 +1,5 @@
+Loaded catalog from C:\Users\naury\OneDrive\Рабочий стол\iiko_clone_py\data\catalog.json with 30 categories
+Refreshed catalog files from loaded data
+Server running on http://0.0.0.0:3000
+ * Serving Flask app 'app'
+ * Debug mode: off

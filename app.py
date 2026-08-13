@@ -9,6 +9,12 @@ import requests
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+# Try to import embedded fallback catalog for Render (ephemeral filesystem issue)
+try:
+    from _embedded_catalog import EMBEDDED_CATALOG_JSON
+except ImportError:
+    EMBEDDED_CATALOG_JSON = None
+
 BASE_DIR = Path(__file__).resolve().parent
 STORAGE_DIR = Path(os.getenv('CATALOG_STORAGE_DIR', BASE_DIR / 'data'))
 DATA_FILE = STORAGE_DIR / 'catalog.json'
@@ -54,7 +60,21 @@ catalog = {
 
 
 def create_default_catalog():
-    """Fallback catalog with sample data, used if catalog.json is missing or empty"""
+    """
+    Fallback catalog - used when files are missing (Render ephemeral filesystem).
+    Tries to use embedded full catalog, falls back to minimal sample.
+    """
+    # Try embedded full catalog first
+    if EMBEDDED_CATALOG_JSON:
+        try:
+            embedded = json.loads(EMBEDDED_CATALOG_JSON)
+            print(f'Using embedded fallback catalog with {len(embedded.get("categories", []))} categories')
+            return embedded
+        except Exception as e:
+            print(f'Failed to parse embedded catalog: {e}')
+    
+    # Minimal fallback if embedded fails
+    print('Using minimal fallback catalog')
     return {
         'categories': [
             {
@@ -62,25 +82,6 @@ def create_default_catalog():
                 'title': 'Товары без папки',
                 'parentId': None,
                 'items': []
-            },
-            {
-                'id': 'sample-cat-1',
-                'title': 'Пример категории',
-                'parentId': None,
-                'items': [
-                    {
-                        'id': 'sample-item-1',
-                        'name': 'Пример товара 1',
-                        'price': 1000,
-                        'modifier': ''
-                    },
-                    {
-                        'id': 'sample-item-2',
-                        'name': 'Пример товара 2',
-                        'price': 2000,
-                        'modifier': ''
-                    }
-                ]
             }
         ],
         'items': []
