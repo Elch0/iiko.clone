@@ -159,6 +159,7 @@ const elements = {
   searchButton: document.getElementById('search-button'),
   homeButton: document.getElementById('home-button'),
   modeSelectButton: document.getElementById('mode-select-button'),
+  kitchenModeSelectButton: document.getElementById('kitchen-mode-select-button'),
   menuTitle: document.getElementById('menu-title'),
   menuPaginationZone: document.getElementById('menu-pagination-zone'),
   menuSearchPanel: document.getElementById('menu-search-panel'),
@@ -2244,6 +2245,14 @@ function setupEvents() {
   }
   if (elements.modeSelectButton) {
     elements.modeSelectButton.addEventListener('click', () => {
+      const bridge = getAndroidBridge();
+      if (bridge) {
+        bridge.openModeSelection();
+      }
+    });
+  }
+  if (elements.kitchenModeSelectButton) {
+    elements.kitchenModeSelectButton.addEventListener('click', () => {
       const bridge = getAndroidBridge();
       if (bridge) {
         bridge.openModeSelection();
