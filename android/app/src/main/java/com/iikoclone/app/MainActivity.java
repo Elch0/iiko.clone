@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +143,10 @@ public class MainActivity extends ComponentActivity {
 
         @JavascriptInterface
         public String getKitchenHistory() {
+            synchronized (kitchenReceipts) {
+                removeExpiredHistory();
+                saveKitchenReceipts();
+            }
             return receiptsJson(kitchenHistory);
         }
 
@@ -165,6 +171,16 @@ public class MainActivity extends ComponentActivity {
         @JavascriptInterface
         public void sendReceipt(String receiptJson) {
             new Thread(() -> sendOverBluetooth(receiptJson)).start();
+        }
+
+        @JavascriptInterface
+        public void syncReceipts(String receiptsJson) {
+            try {
+                JSONObject payload = new JSONObject();
+                payload.put("type", "sync");
+                payload.put("receipts", new JSONArray(receiptsJson));
+                new Thread(() -> sendOverBluetooth(payload.toString())).start();
+            } catch (Exception ignored) { }
         }
     }
 
@@ -220,6 +236,8 @@ public class MainActivity extends ComponentActivity {
             JSONArray historyArray = new JSONArray(history);
             for (int i = 0; i < pendingArray.length(); i++) kitchenReceipts.add(pendingArray.getJSONObject(i).toString());
             for (int i = 0; i < historyArray.length(); i++) kitchenHistory.add(historyArray.getJSONObject(i).toString());
+            removeExpiredHistory();
+            saveKitchenReceipts();
         } catch (Exception ignored) { }
     }
 
@@ -233,9 +251,9 @@ public class MainActivity extends ComponentActivity {
             try (BluetoothServerSocket server = bluetoothAdapter.listenUsingRfcommWithServiceRecord("iiko.clone", SERIAL_PORT_UUID)) {
                 while (!isFinishing()) {
                     try (BluetoothSocket socket = server.accept()) {
-                        byte[] buffer = new byte[8192];
-                        int length = socket.getInputStream().read(buffer);
-                        if (length > 0) handleIncomingMessage(new String(buffer, 0, length, StandardCharsets.UTF_8).trim());
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                        String message;
+                        while ((message = reader.readLine()) != null) handleIncomingMessage(message);
                     } catch (IOException ignored) { }
                 }
             } catch (IOException ignored) { }
@@ -255,7 +273,10 @@ public class MainActivity extends ComponentActivity {
                     kitchenHistory.clear();
                 } else if (payload.optJSONArray("items") != null && payload.optJSONArray("items").length() > 0) {
                     kitchenReceipts.add(payload.toString());
+                } else if (payload.optJSONArray("receipts") != null) {
+                    syncPendingReceipts(payload.optJSONArray("receipts"));
                 }
+                removeExpiredHistory();
                 saveKitchenReceipts();
             }
         } catch (Exception ignored) { }
@@ -264,6 +285,38 @@ public class MainActivity extends ComponentActivity {
     private void removeReceipt(String receiptId, List<String> receipts) {
         receipts.removeIf(receipt -> {
             try { return receiptId.equals(new JSONObject(receipt).optString("id")); } catch (Exception ignored) { return false; }
+        });
+    }
+
+    private void syncPendingReceipts(JSONArray incoming) {
+        List<String> next = new ArrayList<>();
+        for (int i = 0; i < incoming.length(); i++) {
+            try {
+                JSONObject receipt = incoming.getJSONObject(i);
+                String id = receipt.optString("id");
+                if (!containsReceipt(id, kitchenHistory)) next.add(receipt.toString());
+            } catch (Exception ignored) { }
+        }
+        kitchenReceipts.clear();
+        kitchenReceipts.addAll(next);
+    }
+
+    private boolean containsReceipt(String receiptId, List<String> receipts) {
+        for (String receipt : receipts) {
+            try {
+                if (receiptId.equals(new JSONObject(receipt).optString("id"))) return true;
+            } catch (Exception ignored) { }
+        }
+        return false;
+    }
+
+    private void removeExpiredHistory() {
+        long cutoff = System.currentTimeMillis() - 24L * 60L * 60L * 1000L;
+        kitchenHistory.removeIf(receipt -> {
+            try {
+                String servedAt = new JSONObject(receipt).optString("servedAt");
+                return servedAt.isEmpty() || java.time.Instant.parse(servedAt).toEpochMilli() < cutoff;
+            } catch (Exception ignored) { return true; }
         });
     }
 }

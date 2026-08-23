@@ -123,13 +123,21 @@ body {
 
 .kitchen-page .receipt-list {
   height: calc(100vh - 92px);
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(3, max-content);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-content: start;
-  gap: 16px;
-  overflow: hidden;
+  display: block;
+  column-width: calc((100% - 32px) / 3);
+  column-gap: 16px;
+  column-fill: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.kitchen-page .kitchen-receipt-card {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+  vertical-align: top;
+  break-inside: avoid;
 }
 
 @media (max-width: 900px) {
