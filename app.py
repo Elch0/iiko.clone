@@ -18,7 +18,6 @@ except ImportError:
 BASE_DIR = Path(__file__).resolve().parent
 STORAGE_DIR = Path(os.getenv('CATALOG_STORAGE_DIR', BASE_DIR / 'data'))
 DATA_FILE = STORAGE_DIR / 'catalog.json'
-BACKUP_FILE = STORAGE_DIR / 'catalog.backup.json'
 ADMIN_TOKEN = os.getenv('ADMIN_TOKEN', 'iiko-admin-token')
 PORT = int(os.getenv('PORT', 3000))
 
@@ -90,8 +89,6 @@ def ensure_data_file():
     STORAGE_DIR.mkdir(parents=True, exist_ok=True)
     if not DATA_FILE.exists():
         DATA_FILE.write_text(json.dumps(create_default_catalog(), ensure_ascii=False, indent=2), encoding='utf-8')
-    if not BACKUP_FILE.exists():
-        BACKUP_FILE.write_text(DATA_FILE.read_text(encoding='utf-8'), encoding='utf-8')
 
 
 def is_meaningful_catalog(raw_catalog):
@@ -251,35 +248,21 @@ def load_catalog():
     ensure_data_file()
     loaded_catalog = None
     
-    # Try to load from data files
-    for candidate in (DATA_FILE, BACKUP_FILE):
-        try:
-            if not candidate.exists():
-                continue
-            raw = candidate.read_text(encoding='utf-8')
-            if not raw.strip():
-                continue
-            parsed = json.loads(raw)
-            if not isinstance(parsed, dict):
-                continue
-            if not is_meaningful_catalog(parsed):
-                continue
-            loaded_catalog = {'categories': parsed.get('categories', []), 'items': []}
-            break
-        except Exception as error:
-            pass
+    try:
+        if DATA_FILE.exists():
+            raw = DATA_FILE.read_text(encoding='utf-8')
+            if raw.strip():
+                parsed = json.loads(raw)
+                if isinstance(parsed, dict) and is_meaningful_catalog(parsed):
+                    loaded_catalog = {'categories': parsed.get('categories', []), 'items': []}
+    except (OSError, json.JSONDecodeError):
+        loaded_catalog = None
 
     # If we successfully loaded a catalog, ensure it's saved to both files
     if loaded_catalog and not is_meaningful_catalog(loaded_catalog):
         loaded_catalog = None
         
     if loaded_catalog:
-        try:
-            serialized = json.dumps(loaded_catalog, ensure_ascii=False, indent=2)
-            DATA_FILE.write_text(serialized, encoding='utf-8')
-            BACKUP_FILE.write_text(serialized, encoding='utf-8')
-        except Exception as e:
-            pass
         return loaded_catalog
 
     # Try to load from GitHub as last resort before default
@@ -288,8 +271,7 @@ def load_catalog():
         try:
             serialized = json.dumps(github_catalog, ensure_ascii=False, indent=2)
             DATA_FILE.write_text(serialized, encoding='utf-8')
-            BACKUP_FILE.write_text(serialized, encoding='utf-8')
-        except Exception as e:
+        except OSError:
             pass
         return github_catalog
     return create_default_catalog()
@@ -345,7 +327,6 @@ def save_catalog(next_catalog):
         ensure_data_file()
         serialized = json.dumps(next_catalog, ensure_ascii=False, indent=2)
         DATA_FILE.write_text(serialized, encoding='utf-8')
-        BACKUP_FILE.write_text(serialized, encoding='utf-8')
         sync_catalog_to_github(serialized)
     except Exception as error:
         raise
