@@ -125,10 +125,13 @@ body {
 
 .kitchen-page .receipt-list {
   height: calc(100vh - 72px);
-  display: block;
-  column-width: calc((100% - 32px) / 3);
-  column-gap: 16px;
-  column-fill: auto;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, max-content);
+  grid-auto-columns: calc((100% - 32px) / 3);
+  align-content: start;
+  align-items: start;
+  gap: 8px 16px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
@@ -138,19 +141,17 @@ body {
   display: block;
   width: 100%;
   margin-bottom: 8px;
-  vertical-align: top;
-  break-inside: auto;
 }
 
 @media (max-width: 900px) {
   .kitchen-page .receipt-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-columns: calc((100% - 16px) / 2);
   }
 }
 
 @media (max-width: 600px) {
   .kitchen-page .receipt-list {
-    grid-template-columns: 1fr;
+    grid-auto-columns: 100%;
   }
 }
 
