@@ -17,6 +17,7 @@
         <button id="tab-create" class="tab-button active">Создать чек</button>
         <button id="tab-history" class="tab-button">Сохраненные чеки</button>
       </div>
+      <div id="bluetooth-status" class="bluetooth-status">Bluetooth: проверка...</div>
     </header>
 
     <main>
@@ -139,20 +140,32 @@
     </main>
   </div>
 
+  <section id="page-kitchen" class="page kitchen-page">
+    <header class="kitchen-header">
+      <h1>Куханный экран</h1>
+      <div id="kitchen-bluetooth-status" class="bluetooth-status">Bluetooth: проверка...</div>
+    </header>
+    <div id="kitchen-receipt-list" class="receipt-list"></div>
+  </section>
+
   <script>
+    const bootstrapOrigin = window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file:')
+      ? window.location.origin
+      : '';
+
     const renderApiBaseUrl = window.__APP_API_BASE_URL__ || (
       window.location.hostname === 'localhost'
         ? 'http://localhost:3000'
-        : window.location.origin || 'https://iiko-clone-1.onrender.com'
+        : bootstrapOrigin || 'https://iiko-clone-1.onrender.com'
     );
     const safeRenderApiBaseUrl = /your-render-app\.onrender\.com|your-server|your-user|example\.com/i.test(renderApiBaseUrl)
-      ? (window.location.origin || 'https://iiko-clone-1.onrender.com')
+      ? (bootstrapOrigin || 'https://iiko-clone-1.onrender.com')
       : renderApiBaseUrl;
 
     window.__REMOTE_CATALOG_URL__ = `${safeRenderApiBaseUrl}/api/catalog`;
     window.__API_BASE_URL__ = safeRenderApiBaseUrl;
   </script>
   <script src="utils.js?v=20260811-1"></script>
-  <script src="app.js?v=20260811-1"></script>
+  <script src="app.js?v=20260813-1"></script>
 </body>
 </html>

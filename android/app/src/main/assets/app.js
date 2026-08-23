@@ -233,6 +233,7 @@ let activePaymentTypeId = paymentTypes[0]?.id || '';
 let savedReceipts = [];
 let historyFilter = 'all';
 let isMenuEditing = false;
+const appRole = new URLSearchParams(window.location.search).get('role') || 'cashier';
 
 // Multiple receipts management
 let receipts = [{ id: 1, items: {}, payments: [] }];
@@ -286,8 +287,51 @@ const elements = {
   sumKaspi: document.getElementById('sum-kaspi'),
   sumHalyk: document.getElementById('sum-halyk'),
   sumNalichka: document.getElementById('sum-nalichka'),
-  sumTotal: document.getElementById('sum-total')
+  sumTotal: document.getElementById('sum-total'),
+  bluetoothStatus: document.getElementById('bluetooth-status'),
+  kitchenBluetoothStatus: document.getElementById('kitchen-bluetooth-status'),
+  kitchenReceiptList: document.getElementById('kitchen-receipt-list'),
+  appShell: document.querySelector('.app-shell'),
+  kitchenPage: document.getElementById('page-kitchen')
 };
+
+function getAndroidBridge() {
+  return typeof window !== 'undefined' ? window.AndroidBridge : null;
+}
+
+function updateBluetoothStatus() {
+  const bridge = getAndroidBridge();
+  const status = bridge ? bridge.getBluetoothStatus() : 'Только Android';
+  [elements.bluetoothStatus, elements.kitchenBluetoothStatus].filter(Boolean).forEach(element => {
+    element.textContent = `Bluetooth: ${status}`;
+  });
+}
+
+function renderKitchenReceipts() {
+  const container = elements.kitchenReceiptList;
+  if (!container) return;
+  container.innerHTML = '';
+  const bridge = getAndroidBridge();
+  const incoming = bridge ? JSON.parse(bridge.getKitchenReceipts() || '[]') : [];
+  if (!incoming.length) {
+    container.innerHTML = '<div class="empty-state">Нет чеков с напитками Safia Бар.</div>';
+    return;
+  }
+  incoming.forEach(receipt => {
+    const card = document.createElement('div');
+    card.className = 'receipt-card kitchen-receipt-card';
+    const title = document.createElement('h3');
+    title.textContent = `Чек ${receipt.id}`;
+    card.appendChild(title);
+    (receipt.items || []).forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'receipt-item';
+      row.innerHTML = `<div><div>${item.name} × ${item.quantity}</div>${item.modifier ? `<div class="selected-modifier">${item.modifier}</div>` : ''}</div>`;
+      card.appendChild(row);
+    });
+    container.appendChild(card);
+  });
+}
 
 function formatPrice(value) {
   return `${value.toLocaleString('ru-RU')} ₸`;
@@ -1223,6 +1267,7 @@ function saveReceiptWithPayments(payments) {
       quantity: item.quantity,
       comment: item.comment || '',
       modifier: item.selectedModifier || item.modifier || '',
+      isSafiaBar: isSafiaBarContext(null, item),
       isTakeaway: Boolean(item.isTakeaway),
       tableNumber: Number.isInteger(item.tableNumber) && item.tableNumber > 0 ? item.tableNumber : null
     })),
@@ -1231,6 +1276,14 @@ function saveReceiptWithPayments(payments) {
   };
   savedReceipts.unshift(receipt);
   saveReceipts();
+  const kitchenReceipt = {
+    ...receipt,
+    items: receipt.items.filter(item => item.isSafiaBar)
+  };
+  const bridge = getAndroidBridge();
+  if (bridge && kitchenReceipt.items.length) {
+    bridge.sendReceipt(JSON.stringify(kitchenReceipt));
+  }
   
   // Clear current receipt and create new one
   const currentReceipt = getActiveReceipt();
@@ -2084,6 +2137,10 @@ function clearReceipts() {
 }
 
 function createReceipt() {
+  if (Object.keys(selectedItems).length === 0) {
+    alert('Нельзя сохранить пустой чек.');
+    return;
+  }
   openPaymentModal();
 }
 
@@ -2354,6 +2411,17 @@ function setupEvents() {
 }
 
 function init() {
+  if (appRole === 'kitchen') {
+    elements.appShell?.classList.add('hidden');
+    elements.kitchenPage?.classList.add('active');
+    updateBluetoothStatus();
+    renderKitchenReceipts();
+    window.setInterval(() => {
+      updateBluetoothStatus();
+      renderKitchenReceipts();
+    }, 2000);
+    return;
+  }
   loadReceipts();
   setupEvents();
   renderPaymentTypes();
@@ -2367,6 +2435,8 @@ function init() {
   initializeCatalog();
   renderSelectedItems();
   renderReceipts();
+  updateBluetoothStatus();
+  window.setInterval(updateBluetoothStatus, 5000);
 }
 
 init();

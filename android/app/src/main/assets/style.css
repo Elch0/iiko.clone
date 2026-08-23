@@ -36,6 +36,38 @@ body {
   margin-bottom: 16px;
 }
 
+.bluetooth-status {
+  font-size: 12px;
+  color: var(--muted-text, #667085);
+  white-space: nowrap;
+}
+
+.kitchen-page {
+  display: none;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.kitchen-page.active {
+  display: block;
+}
+
+.kitchen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kitchen-header h1 {
+  margin: 0;
+}
+
+.kitchen-receipt-card {
+  max-width: 720px;
+}
+
 .brand {
   display: inline-block;
   font-size: 20px;
