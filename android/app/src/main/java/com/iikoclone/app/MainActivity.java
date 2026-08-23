@@ -103,7 +103,7 @@ public class MainActivity extends ComponentActivity {
                 return "нет разрешения";
             }
             int paired = bluetoothAdapter.getBondedDevices().size();
-            return paired > 0 ? "подключен, устройств: " + paired : "включен, устройства не сопряжены";
+            return paired > 0 ? "включен, сопряжено устройств: " + paired : "включен, устройства не сопряжены";
         }
 
         @JavascriptInterface

@@ -518,7 +518,9 @@ function nextReceipt() {
 
 function loadReceipts() {
   const stored = localStorage.getItem(storageKey);
-  savedReceipts = stored ? JSON.parse(stored) : [];
+  const parsed = stored ? JSON.parse(stored) : [];
+  savedReceipts = Array.isArray(parsed) ? parsed.filter(receipt => Array.isArray(receipt.items) && receipt.items.length > 0) : [];
+  saveReceipts();
 }
 
 function saveReceipts() {
