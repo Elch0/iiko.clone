@@ -319,7 +319,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         },
         {
           "id": "safia-coffee-13",
-          "name": "Раf Кофе",
+          "name": "РАФ Кофе",
           "price": 1500,
           "modifier": "Без Сахара",
           "modifiers": [
@@ -874,7 +874,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         },
         {
           "id": "safia-matcha-5",
-          "name": "Матча Капучино",
+          "name": "Матча Капучино Кокос",
           "price": 1800,
           "modifier": "Без Сахара",
           "modifiers": [
@@ -1708,13 +1708,13 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "t-10",
           "name": "Микс торт круглый",
-          "price": 12900,
+          "price": 11500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "t-11",
-          "name": "Мороженко тоорт",
+          "name": "Мороженко торт",
           "price": 12500,
           "modifier": "",
           "modifiers": []
@@ -2589,7 +2589,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "pir-4",
           "name": "Лимонная мозайка пирог",
-          "price": 1200,
+          "price": 12000,
           "modifier": "",
           "modifiers": []
         },
@@ -3017,20 +3017,6 @@ EMBEDDED_CATALOG_JSON = r"""{
           "id": "pr-kroshka",
           "name": "Крошка",
           "price": 0,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pr-paket05",
-          "name": "Пакет премиум 0,5",
-          "price": 900,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "pr-paketbig",
-          "name": "Пакет премиум большой",
-          "price": 1100,
           "modifier": "",
           "modifiers": []
         },
@@ -3859,6 +3845,20 @@ EMBEDDED_CATALOG_JSON = r"""{
           "price": 400,
           "modifier": "",
           "modifiers": []
+        },
+        {
+          "id": "sdo-16",
+          "name": "Булочка Плюшка",
+          "price": 300,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sdo-17",
+          "name": "Булочка с Шоколадом",
+          "price": 600,
+          "modifier": "",
+          "modifiers": []
         }
       ]
     },
@@ -4409,4 +4409,5 @@ EMBEDDED_CATALOG_JSON = r"""{
       ]
     }
   ]
-}"""
+}
+"""
