@@ -64,6 +64,12 @@ body {
   margin: 0;
 }
 
+.kitchen-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
 .kitchen-receipt-card {
   max-width: 720px;
 }

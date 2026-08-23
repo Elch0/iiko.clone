@@ -180,6 +180,12 @@ function getAndroidBridge() {
   return typeof window !== 'undefined' ? window.AndroidBridge : null;
 }
 
+function bindModeSelectionButtons() {
+  [elements.modeSelectButton, elements.kitchenModeSelectButton].filter(Boolean).forEach(button => {
+    button.addEventListener('click', () => getAndroidBridge()?.openModeSelection());
+  });
+}
+
 function renderKitchenReceipts() {
   const container = elements.kitchenReceiptList;
   if (!container) return;
@@ -2243,22 +2249,7 @@ function setupEvents() {
   if (elements.brandToggle) {
     elements.brandToggle.addEventListener('click', toggleItemPriceVisibility);
   }
-  if (elements.modeSelectButton) {
-    elements.modeSelectButton.addEventListener('click', () => {
-      const bridge = getAndroidBridge();
-      if (bridge) {
-        bridge.openModeSelection();
-      }
-    });
-  }
-  if (elements.kitchenModeSelectButton) {
-    elements.kitchenModeSelectButton.addEventListener('click', () => {
-      const bridge = getAndroidBridge();
-      if (bridge) {
-        bridge.openModeSelection();
-      }
-    });
-  }
+  bindModeSelectionButtons();
   elements.saveButton.addEventListener('click', createReceipt);
   elements.clearReceiptsButton.addEventListener('click', clearReceipts);
   elements.backButton.addEventListener('click', goBack);
@@ -2287,6 +2278,7 @@ function init() {
   if (appRole === 'kitchen') {
     elements.appShell?.classList.add('hidden');
     elements.kitchenPage?.classList.add('active');
+    bindModeSelectionButtons();
     renderKitchenReceipts();
     window.setInterval(() => {
       renderKitchenReceipts();
