@@ -247,15 +247,6 @@ function renderKitchenReceipts() {
   });
 }
 
-function syncKitchenReceipts() {
-  const bridge = getAndroidBridge();
-  if (!bridge || !savedReceipts) return;
-  const receipts = savedReceipts
-    .map(receipt => ({ ...receipt, items: receipt.items.filter(item => item.isSafiaBar) }))
-    .filter(receipt => receipt.items.length);
-  bridge.syncReceipts(JSON.stringify(receipts));
-}
-
 function formatPrice(value) {
   return `${value.toLocaleString('ru-RU')} ₸`;
 }
@@ -2340,7 +2331,6 @@ function init() {
   initializeCatalog();
   renderSelectedItems();
   renderReceipts();
-  window.setInterval(syncKitchenReceipts, 2000);
 }
 
 init();

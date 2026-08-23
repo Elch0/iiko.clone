@@ -173,15 +173,6 @@ public class MainActivity extends ComponentActivity {
             new Thread(() -> sendOverBluetooth(receiptJson)).start();
         }
 
-        @JavascriptInterface
-        public void syncReceipts(String receiptsJson) {
-            try {
-                JSONObject payload = new JSONObject();
-                payload.put("type", "sync");
-                payload.put("receipts", new JSONArray(receiptsJson));
-                new Thread(() -> sendOverBluetooth(payload.toString())).start();
-            } catch (Exception ignored) { }
-        }
     }
 
     private void sendOverBluetooth(String receiptJson) {
@@ -273,8 +264,6 @@ public class MainActivity extends ComponentActivity {
                     kitchenHistory.clear();
                 } else if (payload.optJSONArray("items") != null && payload.optJSONArray("items").length() > 0) {
                     kitchenReceipts.add(payload.toString());
-                } else if (payload.optJSONArray("receipts") != null) {
-                    syncPendingReceipts(payload.optJSONArray("receipts"));
                 }
                 removeExpiredHistory();
                 saveKitchenReceipts();
@@ -286,28 +275,6 @@ public class MainActivity extends ComponentActivity {
         receipts.removeIf(receipt -> {
             try { return receiptId.equals(new JSONObject(receipt).optString("id")); } catch (Exception ignored) { return false; }
         });
-    }
-
-    private void syncPendingReceipts(JSONArray incoming) {
-        List<String> next = new ArrayList<>();
-        for (int i = 0; i < incoming.length(); i++) {
-            try {
-                JSONObject receipt = incoming.getJSONObject(i);
-                String id = receipt.optString("id");
-                if (!containsReceipt(id, kitchenHistory)) next.add(receipt.toString());
-            } catch (Exception ignored) { }
-        }
-        kitchenReceipts.clear();
-        kitchenReceipts.addAll(next);
-    }
-
-    private boolean containsReceipt(String receiptId, List<String> receipts) {
-        for (String receipt : receipts) {
-            try {
-                if (receiptId.equals(new JSONObject(receipt).optString("id"))) return true;
-            } catch (Exception ignored) { }
-        }
-        return false;
     }
 
     private void removeExpiredHistory() {
