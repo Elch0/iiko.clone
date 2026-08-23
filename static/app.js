@@ -121,6 +121,7 @@ let savedReceipts = [];
 let historyFilter = 'all';
 let isMenuEditing = false;
 const appRole = new URLSearchParams(window.location.search).get('role') || 'cashier';
+let kitchenView = 'orders';
 
 // Multiple receipts management
 let receipts = [{ id: 1, items: {}, payments: [] }];
@@ -172,6 +173,8 @@ const elements = {
   sumNalichka: document.getElementById('sum-nalichka'),
   sumTotal: document.getElementById('sum-total'),
   kitchenReceiptList: document.getElementById('kitchen-receipt-list'),
+  kitchenOrdersButton: document.getElementById('kitchen-orders-button'),
+  kitchenHistoryButton: document.getElementById('kitchen-history-button'),
   appShell: document.querySelector('.app-shell'),
   kitchenPage: document.getElementById('page-kitchen')
 };
@@ -191,7 +194,7 @@ function renderKitchenReceipts() {
   if (!container) return;
   container.innerHTML = '';
   const bridge = getAndroidBridge();
-  const incoming = bridge ? JSON.parse(bridge.getKitchenReceipts() || '[]') : [];
+  const incoming = bridge ? JSON.parse((kitchenView === 'history' ? bridge.getKitchenHistory() : bridge.getKitchenReceipts()) || '[]') : [];
   if (!incoming.length) {
     container.innerHTML = '<div class="empty-state">Нет чеков с напитками Safia Бар.</div>';
     return;
@@ -199,16 +202,45 @@ function renderKitchenReceipts() {
   incoming.forEach(receipt => {
     const card = document.createElement('div');
     card.className = 'receipt-card kitchen-receipt-card';
-    const title = document.createElement('h3');
+    const control = document.createElement('div');
+    control.className = `kitchen-receipt-control${kitchenView === 'history' ? ' kitchen-receipt-control-done' : ''}`;
+    const timer = document.createElement('strong');
+    timer.className = 'kitchen-timer';
+    const updateTimer = () => {
+      const remaining = 600 - Math.floor((Date.now() - new Date(receipt.createdAt).getTime()) / 1000);
+      const absolute = Math.abs(remaining);
+      const minutes = String(Math.floor(absolute / 60)).padStart(2, '0');
+      const seconds = String(absolute % 60).padStart(2, '0');
+      timer.textContent = remaining < 0 ? `-${minutes}:${seconds}` : `${minutes}:${seconds}`;
+      control.classList.toggle('kitchen-receipt-expired', remaining < 0);
+    };
+    updateTimer();
+    const title = document.createElement('span');
     title.textContent = `Чек ${receipt.id}`;
-    card.appendChild(title);
+    control.append(timer, title);
+    if (kitchenView === 'orders') {
+      const served = document.createElement('button');
+      served.type = 'button';
+      served.className = 'filter-button kitchen-served-button';
+      served.textContent = 'Подано';
+      served.addEventListener('click', () => {
+        bridge?.markKitchenReceiptServed(receipt.id);
+        renderKitchenReceipts();
+      });
+      control.appendChild(served);
+    }
+    card.appendChild(control);
+    const body = document.createElement('div');
+    body.className = 'kitchen-receipt-body';
     (receipt.items || []).forEach(item => {
       const row = document.createElement('div');
       row.className = 'receipt-item';
-      row.innerHTML = `<div><div>${item.name} × ${item.quantity}</div>${item.modifier ? `<div class="selected-modifier">${item.modifier}</div>` : ''}</div>`;
-      card.appendChild(row);
+      row.innerHTML = `<div><div>${item.name} × ${item.quantity}</div>${item.modifier ? `<div class="selected-modifier">${item.modifier}</div>` : ''}${item.comment ? `<div class="receipt-comment">${item.comment}</div>` : ''}${item.isTakeaway ? '<div class="selected-tag selected-tag-takeaway">На вынос</div>' : ''}${item.tableNumber ? `<div class="selected-tag selected-tag-table">№${item.tableNumber}</div>` : ''}</div>`;
+      body.appendChild(row);
     });
+    card.appendChild(body);
     container.appendChild(card);
+    if (kitchenView === 'orders') window.setInterval(updateTimer, 1000);
   });
 }
 
@@ -2019,6 +2051,7 @@ function clearReceipts() {
   if (!confirmed) return;
   savedReceipts = [];
   saveReceipts();
+  getAndroidBridge()?.clearReceiptHistory();
   renderReceipts();
 }
 
@@ -2170,6 +2203,7 @@ function renderReceipts() {
       if (!ok) return;
       savedReceipts = savedReceipts.filter(r => r.id !== receipt.id);
       saveReceipts();
+      getAndroidBridge()?.deleteReceipt(receipt.id);
       renderReceipts();
     });
     rightBlock.appendChild(del);
@@ -2279,6 +2313,8 @@ function init() {
     elements.appShell?.classList.add('hidden');
     elements.kitchenPage?.classList.add('active');
     bindModeSelectionButtons();
+    elements.kitchenOrdersButton?.addEventListener('click', () => { kitchenView = 'orders'; elements.kitchenOrdersButton.classList.add('active'); elements.kitchenHistoryButton.classList.remove('active'); renderKitchenReceipts(); });
+    elements.kitchenHistoryButton?.addEventListener('click', () => { kitchenView = 'history'; elements.kitchenHistoryButton.classList.add('active'); elements.kitchenOrdersButton.classList.remove('active'); renderKitchenReceipts(); });
     renderKitchenReceipts();
     window.setInterval(() => {
       renderKitchenReceipts();

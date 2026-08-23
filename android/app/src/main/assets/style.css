@@ -71,7 +71,64 @@ body {
 }
 
 .kitchen-receipt-card {
-  max-width: 720px;
+  max-width: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.kitchen-receipt-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #9aaabd;
+  color: #172333;
+}
+
+.kitchen-receipt-control-done {
+  background: #7f8c9e;
+}
+
+.kitchen-receipt-expired {
+  background: #d9534f;
+  color: #fff;
+}
+
+.kitchen-timer {
+  min-width: 64px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kitchen-served-button {
+  margin-left: auto;
+}
+
+.kitchen-receipt-body {
+  padding: 8px 16px 14px;
+  background: #fff;
+}
+
+.kitchen-receipt-body .receipt-item {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+
+.kitchen-page .receipt-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .kitchen-page .receipt-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .kitchen-page .receipt-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .brand {

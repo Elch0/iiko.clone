@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.bluetooth.BluetoothServerSocket;
 import android.content.pm.PackageManager;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -31,17 +33,22 @@ public class MainActivity extends ComponentActivity {
     private static final UUID SERIAL_PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothAdapter bluetoothAdapter;
     private final List<String> kitchenReceipts = new ArrayList<>();
+    private final List<String> kitchenHistory = new ArrayList<>();
+    private SharedPreferences kitchenStorage;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        kitchenStorage = getSharedPreferences("kitchen_receipts", MODE_PRIVATE);
+        loadKitchenReceipts();
         requestBluetoothPermissions();
         showRoleSelection();
     }
 
     private void showRoleSelection() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER);
@@ -76,6 +83,9 @@ public class MainActivity extends ComponentActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void openRole(String role) {
+        setRequestedOrientation("kitchen".equals(role)
+            ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         setContentView(R.layout.activity_main);
 
         WebView webView = findViewById(R.id.web_view);
@@ -126,13 +136,30 @@ public class MainActivity extends ComponentActivity {
 
         @JavascriptInterface
         public String getKitchenReceipts() {
-            JSONArray result = new JSONArray();
+            return receiptsJson(kitchenReceipts);
+        }
+
+        @JavascriptInterface
+        public String getKitchenHistory() {
+            return receiptsJson(kitchenHistory);
+        }
+
+        @JavascriptInterface
+        public void markKitchenReceiptServed(String receiptId) {
             synchronized (kitchenReceipts) {
-                for (String receipt : kitchenReceipts) {
-                    try { result.put(new JSONObject(receipt)); } catch (Exception ignored) { }
-                }
+                moveReceipt(receiptId, kitchenReceipts, kitchenHistory);
+                saveKitchenReceipts();
             }
-            return result.toString();
+        }
+
+        @JavascriptInterface
+        public void deleteReceipt(String receiptId) {
+            sendCommand("delete", receiptId);
+        }
+
+        @JavascriptInterface
+        public void clearReceiptHistory() {
+            sendCommand("clear", "");
         }
 
         @JavascriptInterface
@@ -153,6 +180,51 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    private void sendCommand(String command, String receiptId) {
+        try {
+            JSONObject payload = new JSONObject();
+            payload.put("type", command);
+            payload.put("id", receiptId);
+            new Thread(() -> sendOverBluetooth(payload.toString())).start();
+        } catch (Exception ignored) { }
+    }
+
+    private String receiptsJson(List<String> receipts) {
+        JSONArray result = new JSONArray();
+        synchronized (receipts) {
+            for (String receipt : receipts) {
+                try { result.put(new JSONObject(receipt)); } catch (Exception ignored) { }
+            }
+        }
+        return result.toString();
+    }
+
+    private void moveReceipt(String receiptId, List<String> from, List<String> to) {
+        for (int index = from.size() - 1; index >= 0; index--) {
+            try {
+                if (receiptId.equals(new JSONObject(from.get(index)).optString("id"))) {
+                    to.add(from.remove(index));
+                    return;
+                }
+            } catch (Exception ignored) { }
+        }
+    }
+
+    private void loadKitchenReceipts() {
+        String pending = kitchenStorage.getString("pending", "[]");
+        String history = kitchenStorage.getString("history", "[]");
+        try {
+            JSONArray pendingArray = new JSONArray(pending);
+            JSONArray historyArray = new JSONArray(history);
+            for (int i = 0; i < pendingArray.length(); i++) kitchenReceipts.add(pendingArray.getJSONObject(i).toString());
+            for (int i = 0; i < historyArray.length(); i++) kitchenHistory.add(historyArray.getJSONObject(i).toString());
+        } catch (Exception ignored) { }
+    }
+
+    private void saveKitchenReceipts() {
+        kitchenStorage.edit().putString("pending", receiptsJson(kitchenReceipts)).putString("history", receiptsJson(kitchenHistory)).apply();
+    }
+
     private void startBluetoothReceiver() {
         new Thread(() -> {
             if (bluetoothAdapter == null || android.os.Build.VERSION.SDK_INT >= 31 && checkSelfPermission("android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) return;
@@ -161,14 +233,35 @@ public class MainActivity extends ComponentActivity {
                     try (BluetoothSocket socket = server.accept()) {
                         byte[] buffer = new byte[8192];
                         int length = socket.getInputStream().read(buffer);
-                        if (length > 0) {
-                            synchronized (kitchenReceipts) {
-                                kitchenReceipts.add(new String(buffer, 0, length, StandardCharsets.UTF_8).trim());
-                            }
-                        }
+                        if (length > 0) handleIncomingMessage(new String(buffer, 0, length, StandardCharsets.UTF_8).trim());
                     } catch (IOException ignored) { }
                 }
             } catch (IOException ignored) { }
         }).start();
+    }
+
+    private void handleIncomingMessage(String message) {
+        try {
+            JSONObject payload = new JSONObject(message);
+            String type = payload.optString("type", "receipt");
+            synchronized (kitchenReceipts) {
+                if ("delete".equals(type)) {
+                    removeReceipt(payload.optString("id"), kitchenReceipts);
+                    removeReceipt(payload.optString("id"), kitchenHistory);
+                } else if ("clear".equals(type)) {
+                    kitchenReceipts.clear();
+                    kitchenHistory.clear();
+                } else if (payload.optJSONArray("items") != null && payload.optJSONArray("items").length() > 0) {
+                    kitchenReceipts.add(payload.toString());
+                }
+                saveKitchenReceipts();
+            }
+        } catch (Exception ignored) { }
+    }
+
+    private void removeReceipt(String receiptId, List<String> receipts) {
+        receipts.removeIf(receipt -> {
+            try { return receiptId.equals(new JSONObject(receipt).optString("id")); } catch (Exception ignored) { return false; }
+        });
     }
 }
