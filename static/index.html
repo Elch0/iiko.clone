@@ -11,13 +11,12 @@
     <header class="app-header">
       <div>
         <button id="brand-toggle" class="brand-button" type="button" title="Показать цены">iiko Клон</button>
-        <button id="menu-edit-toggle" class="subtitle-button" type="button" title="Режим редактирования">by Elcho</button>
+        <button id="mode-select-button" class="subtitle-button" type="button" title="Выбор режима работы">by Elcho</button>
       </div>
       <div class="page-switch">
         <button id="tab-create" class="tab-button active">Создать чек</button>
         <button id="tab-history" class="tab-button">Сохраненные чеки</button>
       </div>
-      <div id="bluetooth-status" class="bluetooth-status">Bluetooth: проверка...</div>
     </header>
 
     <main>
@@ -86,16 +85,6 @@
                       <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" />
                     </svg>
                   </button>
-                  <button id="menu-edit-add-button" class="icon-button edit-action-button hidden" aria-label="Добавить" title="Добавить">
-                    +
-                  </button>
-                  <button id="menu-edit-save-button" class="icon-button edit-action-button hidden" aria-label="Сохранить" title="Сохранить">
-                    ✓
-                  </button>
-                  <div id="menu-add-popover" class="menu-add-popover hidden">
-                    <button id="menu-add-folder" type="button">Добавить папку</button>
-                    <button id="menu-add-item" type="button">Добавить позицию</button>
-                  </div>
                 </div>
                 <div id="menu-header-pagination" class="menu-header-pagination"></div>
               </div>
@@ -142,8 +131,7 @@
 
   <section id="page-kitchen" class="page kitchen-page">
     <header class="kitchen-header">
-      <h1>Куханный экран</h1>
-      <div id="kitchen-bluetooth-status" class="bluetooth-status">Bluetooth: проверка...</div>
+      <h1>Кухонный экран</h1>
     </header>
     <div id="kitchen-receipt-list" class="receipt-list"></div>
   </section>

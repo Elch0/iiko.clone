@@ -6,7 +6,7 @@ from pathlib import Path
 import psycopg2
 import psycopg2.extras
 import requests
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 
 # Try to import embedded fallback catalog for Render (ephemeral filesystem issue)
@@ -18,7 +18,6 @@ except ImportError:
 BASE_DIR = Path(__file__).resolve().parent
 STORAGE_DIR = Path(os.getenv('CATALOG_STORAGE_DIR', BASE_DIR / 'data'))
 DATA_FILE = STORAGE_DIR / 'catalog.json'
-ADMIN_TOKEN = os.getenv('ADMIN_TOKEN', 'iiko-admin-token')
 PORT = int(os.getenv('PORT', 3000))
 
 GITHUB_REPO = os.getenv('GITHUB_REPO', '')
@@ -353,15 +352,6 @@ def initialize_catalog():
     rebuild_items()
 
 
-def require_admin_token():
-    token = request.headers.get('x-admin-token', '')
-    return token == ADMIN_TOKEN
-
-
-def invalid_payload(message='Invalid payload'):
-    return jsonify({'error': message}), 400
-
-
 def create_app():
     initialize_catalog()
 
@@ -372,87 +362,6 @@ def create_app():
     @app.route('/api/catalog', methods=['GET'])
     def get_catalog():
         return jsonify(catalog)
-
-    @app.route('/api/catalog', methods=['POST'])
-    def post_catalog():
-        if not require_admin_token():
-            return jsonify({'error': 'Forbidden'}), 403
-
-        body = request.get_json(silent=True)
-        if not body or not isinstance(body.get('categories'), list):
-            return invalid_payload('Invalid catalog payload')
-
-        try:
-            # Validate categories structure
-            for category in body.get('categories', []):
-                if not isinstance(category, dict):
-                    return invalid_payload('Each category must be an object')
-                if 'id' not in category or 'title' not in category:
-                    return invalid_payload('Each category must have "id" and "title"')
-                if not isinstance(category.get('items'), list):
-                    category['items'] = []
-            
-            catalog['categories'] = body['categories']
-            rebuild_items()
-            save_catalog(catalog)
-            return jsonify(catalog)
-        except Exception as error:
-            return jsonify({'error': f'Failed to save catalog: {str(error)}'}), 500
-
-    @app.route('/api/items/<item_id>', methods=['PUT'])
-    def put_item(item_id):
-        if not require_admin_token():
-            return jsonify({'error': 'Forbidden'}), 403
-
-        try:
-            body = request.get_json(silent=True) or {}
-            updated = False
-            for category in catalog['categories']:
-                for item in category.get('items', []):
-                    if item.get('id') == item_id:
-                        if isinstance(body.get('name'), str):
-                            item['name'] = body['name']
-                        if isinstance(body.get('price'), (int, float)):
-                            item['price'] = body['price']
-                        if isinstance(body.get('modifiers'), list):
-                            item['modifiers'] = body['modifiers']
-                        if isinstance(body.get('modifier'), str):
-                            item['modifier'] = body['modifier']
-                        updated = True
-                        break
-                if updated:
-                    break
-
-            if not updated:
-                return jsonify({'error': 'Item not found'}), 404
-
-            rebuild_items()
-            save_catalog(catalog)
-            return jsonify(catalog)
-        except Exception as error:
-            return jsonify({'error': f'Failed to update item: {str(error)}'}), 500
-
-    @app.route('/api/categories/<category_id>', methods=['PUT'])
-    def put_category(category_id):
-        if not require_admin_token():
-            return jsonify({'error': 'Forbidden'}), 403
-
-        try:
-            body = request.get_json(silent=True) or {}
-            title = body.get('title')
-            if not isinstance(title, str) or not title.strip():
-                return invalid_payload('Invalid category title')
-
-            category = next((entry for entry in catalog['categories'] if entry.get('id') == category_id), None)
-            if not category:
-                return jsonify({'error': 'Category not found'}), 404
-
-            category['title'] = title.strip()
-            rebuild_items()
-            save_catalog(catalog)
-            return jsonify(catalog)
-        except Exception as error:
-            return jsonify({'error': f'Failed to update category: {str(error)}'}), 500
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')

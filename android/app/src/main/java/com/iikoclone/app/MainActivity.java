@@ -52,14 +52,22 @@ public class MainActivity extends ComponentActivity {
         title.setTextColor(Color.rgb(32, 35, 42));
         title.setGravity(Gravity.CENTER);
         layout.addView(title, new LinearLayout.LayoutParams(-1, -2));
+        TextView bluetooth = new TextView(this);
+        bluetooth.setText("Bluetooth: " + bluetoothStatus());
+        bluetooth.setGravity(Gravity.CENTER);
+        bluetooth.setPadding(0, 24, 0, 0);
+        layout.addView(bluetooth, new LinearLayout.LayoutParams(-1, -2));
         addRoleButton(layout, "Касса", "cashier");
-        addRoleButton(layout, "Куханный экран", "kitchen");
+        addRoleButton(layout, "Кухонный экран", "kitchen");
         setContentView(layout);
     }
 
     private void addRoleButton(LinearLayout layout, String label, String role) {
         Button button = new Button(this);
         button.setText(label);
+        button.setTextColor(Color.WHITE);
+        button.setBackgroundColor(Color.rgb(217, 61, 61));
+        button.setAllCaps(false);
         button.setOnClickListener(view -> openRole(role));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
         params.setMargins(0, 24, 0, 0);
@@ -94,16 +102,23 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    private String bluetoothStatus() {
+        if (bluetoothAdapter == null) return "недоступен";
+        if (!bluetoothAdapter.isEnabled()) return "выключен";
+        if (android.os.Build.VERSION.SDK_INT >= 31 && checkSelfPermission("android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) return "нет разрешения";
+        int paired = bluetoothAdapter.getBondedDevices().size();
+        return paired > 0 ? "включен, сопряжено устройств: " + paired : "включен, устройства не сопряжены";
+    }
+
     private class AndroidBridge {
         @JavascriptInterface
         public String getBluetoothStatus() {
-            if (bluetoothAdapter == null) return "недоступен";
-            if (!bluetoothAdapter.isEnabled()) return "выключен";
-            if (android.os.Build.VERSION.SDK_INT >= 31 && checkSelfPermission("android.permission.BLUETOOTH_CONNECT") != PackageManager.PERMISSION_GRANTED) {
-                return "нет разрешения";
-            }
-            int paired = bluetoothAdapter.getBondedDevices().size();
-            return paired > 0 ? "включен, сопряжено устройств: " + paired : "включен, устройства не сопряжены";
+            return bluetoothStatus();
+        }
+
+        @JavascriptInterface
+        public void openModeSelection() {
+            runOnUiThread(() -> showRoleSelection());
         }
 
         @JavascriptInterface

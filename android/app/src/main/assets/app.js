@@ -7,12 +7,7 @@ const paymentTypes = [
   { id: 'tab', label: 'TAB', color: 'tab' }
 ];
 
-const catalogStorageKey = 'iikoCloneCatalog';
-const adminModeStorageKey = 'iikoAdminMode';
-const adminTokenStorageKey = 'iikoAdminToken';
-const adminPassword = '8956';
 const receiptStorageKey = 'iikoCloneReceipts';
-const adminToken = 'iiko-admin-token';
 
 let categories = [];
 let itemsCatalog = [];
@@ -26,38 +21,9 @@ const configuredRemoteCatalogUrl = (typeof window !== 'undefined' && window.__RE
 const remoteCatalogUrl = configuredRemoteCatalogUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredRemoteCatalogUrl)
   ? configuredRemoteCatalogUrl
   : defaultRemoteCatalogUrl;
-const configuredApiBaseUrl = (typeof window !== 'undefined' && window.__API_BASE_URL__) ? String(window.__API_BASE_URL__).replace(/\/$/, '') : '';
-const apiBaseUrl = configuredApiBaseUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredApiBaseUrl)
-  ? configuredApiBaseUrl
-  : (typeof window !== 'undefined' && locationOrigin ? locationOrigin.replace(/\/$/, '') : 'https://iiko-clone-1.onrender.com');
-const adminModeFlag = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search).get('admin') === '1' : false;
-const storedAdminMode = (typeof window !== 'undefined' && window.localStorage) ? window.localStorage.getItem(adminModeStorageKey) === 'true' : false;
-let isAdminMode = adminModeFlag || storedAdminMode;
-if (isAdminMode && typeof window !== 'undefined' && window.localStorage) {
-  window.localStorage.setItem(adminModeStorageKey, 'true');
-  window.localStorage.setItem(adminTokenStorageKey, adminToken);
-}
-let catalogSyncing = false;
-let pendingCatalogSave = false;
 let pendingSearchRender = false;
 let pendingRenderFrame = false;
 const menuDataCache = new Map();
-
-function persistCatalogLocally() {
-  if (typeof window === 'undefined' || !window.localStorage) return;
-  try {
-    window.localStorage.setItem(catalogStorageKey, JSON.stringify({ categories }));
-  } catch (error) {
-  }
-}
-
-function clearCatalogLocalCache() {
-  if (typeof window === 'undefined' || !window.localStorage) return;
-  try {
-    window.localStorage.removeItem(catalogStorageKey);
-  } catch (error) {
-  }
-}
 
 function getPreferredDefaultCategoryId() {
   const preferredMatch = categories.find(category => category.id !== 'root' && /^круглые торты alt$/i.test(String(category.title || '').trim()));
@@ -81,7 +47,6 @@ function applyFinalMenuState() {
 }
 
 async function initializeCatalog() {
-  clearCatalogLocalCache();
   categories = [];
   rebuildItemsCatalog();
   await loadCatalogFromServer();
@@ -132,7 +97,6 @@ async function loadCatalogFromServer() {
       if (isUsableCatalogPayload(payload)) {
         categories = payload.categories.map(category => ({ ...category, items: [...(category.items || [])] }));
         rebuildItemsCatalog();
-        persistCatalogLocally();
         applyFinalMenuState();
         return;
       }
@@ -142,84 +106,7 @@ async function loadCatalogFromServer() {
 
   categories = [];
   rebuildItemsCatalog();
-  persistCatalogLocally();
   applyFinalMenuState();
-}
-
-async function saveCatalogToServer() {
-  if (catalogSyncing) {
-    pendingCatalogSave = true;
-    return;
-  }
-  catalogSyncing = true;
-  try {
-    const response = await fetch(`${apiBaseUrl}/api/catalog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': localStorage.getItem('iikoAdminToken') || 'iiko-admin-token'
-      },
-      body: JSON.stringify({ categories })
-    });
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMsg = errorData.error || `Failed to save catalog (${response.status})`;
-      throw new Error(errorMsg);
-    }
-    persistCatalogLocally();
-    if (pendingCatalogSave) {
-      pendingCatalogSave = false;
-      await saveCatalogToServer();
-    }
-  } catch (error) {
-    alert(`Ошибка сохранения меню: ${error.message}`);
-  } finally {
-    catalogSyncing = false;
-  }
-}
-
-async function syncItemToServer(item) {
-  if (!isAdminMode) return;
-  try {
-    const response = await fetch(`${apiBaseUrl}/api/items/${item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': localStorage.getItem('iikoAdminToken') || 'iiko-admin-token'
-      },
-      body: JSON.stringify(item)
-    });
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMsg = errorData.error || `Failed to save item (${response.status})`;
-      throw new Error(errorMsg);
-    }
-    persistCatalogLocally();
-  } catch (error) {
-    alert(`Ошибка сохранения товара: ${error.message}`);
-  }
-}
-
-async function syncCategoryToServer(category) {
-  if (!isAdminMode) return;
-  try {
-    const response = await fetch(`${apiBaseUrl}/api/categories/${category.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': localStorage.getItem('iikoAdminToken') || 'iiko-admin-token'
-      },
-      body: JSON.stringify({ title: category.title })
-    });
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMsg = errorData.error || `Failed to save category (${response.status})`;
-      throw new Error(errorMsg);
-    }
-    persistCatalogLocally();
-  } catch (error) {
-    alert(`Ошибка сохранения категории: ${error.message}`);
-  }
 }
 
 const storageKey = receiptStorageKey;
@@ -271,12 +158,7 @@ const elements = {
   backButton: document.getElementById('back-button'),
   searchButton: document.getElementById('search-button'),
   homeButton: document.getElementById('home-button'),
-  menuEditToggle: document.getElementById('menu-edit-toggle'),
-  menuEditAddButton: document.getElementById('menu-edit-add-button'),
-  menuEditSaveButton: document.getElementById('menu-edit-save-button'),
-  menuAddPopover: document.getElementById('menu-add-popover'),
-  menuAddFolderButton: document.getElementById('menu-add-folder'),
-  menuAddItemButton: document.getElementById('menu-add-item'),
+  modeSelectButton: document.getElementById('mode-select-button'),
   menuTitle: document.getElementById('menu-title'),
   menuPaginationZone: document.getElementById('menu-pagination-zone'),
   menuSearchPanel: document.getElementById('menu-search-panel'),
@@ -288,8 +170,6 @@ const elements = {
   sumHalyk: document.getElementById('sum-halyk'),
   sumNalichka: document.getElementById('sum-nalichka'),
   sumTotal: document.getElementById('sum-total'),
-  bluetoothStatus: document.getElementById('bluetooth-status'),
-  kitchenBluetoothStatus: document.getElementById('kitchen-bluetooth-status'),
   kitchenReceiptList: document.getElementById('kitchen-receipt-list'),
   appShell: document.querySelector('.app-shell'),
   kitchenPage: document.getElementById('page-kitchen')
@@ -297,14 +177,6 @@ const elements = {
 
 function getAndroidBridge() {
   return typeof window !== 'undefined' ? window.AndroidBridge : null;
-}
-
-function updateBluetoothStatus() {
-  const bridge = getAndroidBridge();
-  const status = bridge ? bridge.getBluetoothStatus() : 'Только Android';
-  [elements.bluetoothStatus, elements.kitchenBluetoothStatus].filter(Boolean).forEach(element => {
-    element.textContent = `Bluetooth: ${status}`;
-  });
 }
 
 function renderKitchenReceipts() {
@@ -2365,28 +2237,13 @@ function setupEvents() {
   if (elements.brandToggle) {
     elements.brandToggle.addEventListener('click', toggleItemPriceVisibility);
   }
-  elements.menuEditToggle.addEventListener('click', () => {
-    if (!isAdminMode) {
-      const unlocked = activateAdminMode();
-      if (!unlocked) return;
-    }
-    toggleMenuEditing();
-  });
-  elements.menuEditAddButton.addEventListener('click', () => {
-    if (!isMenuEditing) {
-      setMenuEditing(true);
-      return;
-    }
-    elements.menuAddPopover.classList.toggle('hidden');
-  });
-  elements.menuAddFolderButton.addEventListener('click', () => {
-    addMenuEntry('folder');
-  });
-  elements.menuAddItemButton.addEventListener('click', () => {
-    addMenuEntry('item');
-  });
-  if (elements.menuEditSaveButton) {
-    elements.menuEditSaveButton.addEventListener('click', saveMenuChanges);
+  if (elements.modeSelectButton) {
+    elements.modeSelectButton.addEventListener('click', () => {
+      const bridge = getAndroidBridge();
+      if (bridge) {
+        bridge.openModeSelection();
+      }
+    });
   }
   elements.saveButton.addEventListener('click', createReceipt);
   elements.clearReceiptsButton.addEventListener('click', clearReceipts);
@@ -2428,12 +2285,6 @@ function init() {
   setupEvents();
   renderPaymentTypes();
   renderReceiptTabs();
-  if (elements.menuEditToggle) {
-    elements.menuEditToggle.classList.toggle('hidden', false);
-  }
-  if (elements.menuEditAddButton) {
-    elements.menuEditAddButton.classList.toggle('hidden', !isAdminMode);
-  }
   initializeCatalog();
   renderSelectedItems();
   renderReceipts();
