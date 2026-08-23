@@ -45,7 +45,7 @@ body {
 .kitchen-page {
   display: none;
   height: 100vh;
-  padding: 24px;
+  padding: 16px;
   overflow: hidden;
 }
 
@@ -57,8 +57,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .kitchen-header h1 {
@@ -80,8 +80,9 @@ body {
 .kitchen-receipt-control {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 10px;
   background: #9aaabd;
   color: #172333;
 }
@@ -103,7 +104,7 @@ body {
 }
 
 .kitchen-timer {
-  min-width: 64px;
+  min-width: 58px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -112,17 +113,18 @@ body {
 }
 
 .kitchen-receipt-body {
-  padding: 8px 16px 14px;
+  padding: 3px 10px 5px;
   background: #fff;
 }
 
 .kitchen-receipt-body .receipt-item {
   border-bottom: 1px solid var(--border);
-  padding: 10px 0;
+  padding: 5px 0;
+  line-height: 1.2;
 }
 
 .kitchen-page .receipt-list {
-  height: calc(100vh - 92px);
+  height: calc(100vh - 72px);
   display: block;
   column-width: calc((100% - 32px) / 3);
   column-gap: 16px;
@@ -135,7 +137,7 @@ body {
 .kitchen-page .kitchen-receipt-card {
   display: block;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   vertical-align: top;
   break-inside: auto;
 }
