@@ -1128,6 +1128,11 @@ function closePaymentModal() {
 }
 
 function saveReceiptWithPayments(payments) {
+  if (Object.keys(selectedItems).length === 0) {
+    alert('Нельзя сохранить пустой чек.');
+    closePaymentModal();
+    return null;
+  }
   const total = getReceiptTotal();
   const validPayments = payments
     .filter(payment => payment.type === 'tab' || Number(payment.amount) > 0)
@@ -2273,10 +2278,8 @@ function init() {
   if (appRole === 'kitchen') {
     elements.appShell?.classList.add('hidden');
     elements.kitchenPage?.classList.add('active');
-    updateBluetoothStatus();
     renderKitchenReceipts();
     window.setInterval(() => {
-      updateBluetoothStatus();
       renderKitchenReceipts();
     }, 2000);
     return;
@@ -2288,8 +2291,6 @@ function init() {
   initializeCatalog();
   renderSelectedItems();
   renderReceipts();
-  updateBluetoothStatus();
-  window.setInterval(updateBluetoothStatus, 5000);
 }
 
 init();
