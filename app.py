@@ -365,28 +365,9 @@ def invalid_payload(message='Invalid payload'):
 def create_app():
     initialize_catalog()
 
-    @app.before_request
-    def log_request():
-        pass
-
     @app.route('/health', methods=['GET'])
     def health():
         return jsonify({'status': 'ok', 'postgres': USE_POSTGRES})
-
-    @app.route('/api/health-reload', methods=['POST'])
-    def health_reload():
-        """Emergency endpoint to reload catalog from file"""
-        if not require_admin_token():
-            return jsonify({'error': 'Forbidden'}), 403
-        
-        try:
-            loaded = load_catalog()
-            catalog.clear()
-            catalog.update(loaded)
-            rebuild_items()
-            return jsonify({'status': 'reloaded', 'catalog': catalog})
-        except Exception as error:
-            return jsonify({'error': f'Failed to reload: {str(error)}'}), 500
 
     @app.route('/api/catalog', methods=['GET'])
     def get_catalog():
@@ -479,15 +460,6 @@ def create_app():
         if path and (BASE_DIR / 'static' / path).exists():
             return send_from_directory(str(BASE_DIR / 'static'), path)
         return send_from_directory(str(BASE_DIR / 'static'), 'index.html')
-
-    @app.after_request
-    def after_request(response):
-        # Гарантированно добавляем CORS заголовки ко всем ответам
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, x-admin-token, Authorization, X-Requested-With, Accept, Origin'
-        response.headers['Access-Control-Max-Age'] = '3600'
-        return response
 
     return app
 
