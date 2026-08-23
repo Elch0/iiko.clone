@@ -207,7 +207,8 @@ function renderKitchenReceipts() {
     const timer = document.createElement('strong');
     timer.className = 'kitchen-timer';
     const updateTimer = () => {
-      const remaining = 600 - Math.floor((Date.now() - new Date(receipt.createdAt).getTime()) / 1000);
+      const endTime = kitchenView === 'history' && receipt.servedAt ? new Date(receipt.servedAt).getTime() : Date.now();
+      const remaining = 600 - Math.floor((endTime - new Date(receipt.createdAt).getTime()) / 1000);
       const absolute = Math.abs(remaining);
       const minutes = String(Math.floor(absolute / 60)).padStart(2, '0');
       const seconds = String(absolute % 60).padStart(2, '0');
@@ -215,9 +216,11 @@ function renderKitchenReceipts() {
       control.classList.toggle('kitchen-receipt-expired', remaining < 0);
     };
     updateTimer();
-    const title = document.createElement('span');
-    title.textContent = `Чек ${receipt.id}`;
-    control.append(timer, title);
+    const times = document.createElement('span');
+    times.className = 'kitchen-receipt-times';
+    const formatTime = value => new Date(value).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    times.innerHTML = `<span>${formatTime(receipt.createdAt)}</span>${receipt.servedAt ? `<span>${formatTime(receipt.servedAt)}</span>` : ''}`;
+    control.append(timer, times);
     if (kitchenView === 'orders') {
       const served = document.createElement('button');
       served.type = 'button';

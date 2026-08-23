@@ -203,7 +203,9 @@ public class MainActivity extends ComponentActivity {
         for (int index = from.size() - 1; index >= 0; index--) {
             try {
                 if (receiptId.equals(new JSONObject(from.get(index)).optString("id"))) {
-                    to.add(from.remove(index));
+                    JSONObject receipt = new JSONObject(from.remove(index));
+                    receipt.put("servedAt", new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", java.util.Locale.US).format(new java.util.Date()));
+                    to.add(receipt.toString());
                     return;
                 }
             } catch (Exception ignored) { }
