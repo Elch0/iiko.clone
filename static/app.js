@@ -123,6 +123,9 @@ let historyFilter = 'all';
 let isMenuEditing = false;
 const appRole = new URLSearchParams(window.location.search).get('role') || 'cashier';
 let kitchenView = 'orders';
+let kitchenSnapshot = '';
+let kitchenTimerInterval = null;
+let kitchenRequestPending = false;
 
 // Multiple receipts management
 let receipts = [{ id: 1, items: {}, payments: [] }];
@@ -199,15 +202,45 @@ async function getKitchenReceipts() {
 async function renderKitchenReceipts() {
   const container = elements.kitchenReceiptList;
   if (!container) return;
-  container.innerHTML = '';
-  let allReceipts = [];
+  if (kitchenRequestPending) return;
+  kitchenRequestPending = true;
   try {
-    allReceipts = await getKitchenReceipts();
+    const allReceipts = await getKitchenReceipts();
+    const incoming = allReceipts.filter(receipt => kitchenView === 'history' ? receipt.servedAt : !receipt.servedAt);
+    const snapshot = JSON.stringify(incoming);
+    if (snapshot === kitchenSnapshot) {
+      updateKitchenTimers();
+      return;
+    }
+    kitchenSnapshot = snapshot;
+    renderKitchenReceiptCards(container, incoming);
   } catch (error) {
-    container.innerHTML = '<div class="empty-state">Нет подключения к серверу кухни.</div>';
-    return;
+    if (!container.children.length) {
+      container.innerHTML = '<div class="empty-state">Нет подключения к серверу кухни.</div>';
+    }
+  } finally {
+    kitchenRequestPending = false;
   }
-  const incoming = allReceipts.filter(receipt => kitchenView === 'history' ? receipt.servedAt : !receipt.servedAt);
+}
+
+function updateKitchenTimers() {
+  document.querySelectorAll('.kitchen-receipt-card').forEach(card => {
+    const createdAt = Number(card.dataset.createdAt);
+    const servedAt = Number(card.dataset.servedAt || 0);
+    const endTime = kitchenView === 'history' && servedAt ? servedAt : Date.now();
+    const remaining = 600 - Math.floor((endTime - createdAt) / 1000);
+    const absolute = Math.abs(remaining);
+    const minutes = String(Math.floor(absolute / 60)).padStart(2, '0');
+    const seconds = String(absolute % 60).padStart(2, '0');
+    const timer = card.querySelector('.kitchen-timer');
+    if (timer) timer.textContent = remaining < 0 ? `-${minutes}:${seconds}` : `${minutes}:${seconds}`;
+    const control = card.querySelector('.kitchen-receipt-control');
+    control?.classList.toggle('kitchen-receipt-expired', remaining < 0);
+  });
+}
+
+function renderKitchenReceiptCards(container, incoming) {
+  container.innerHTML = '';
   if (!incoming.length) {
     container.innerHTML = '<div class="empty-state">Нет чеков с напитками Safia Бар.</div>';
     return;
@@ -215,20 +248,13 @@ async function renderKitchenReceipts() {
   incoming.forEach(receipt => {
     const card = document.createElement('div');
     card.className = 'receipt-card kitchen-receipt-card';
+    card.dataset.createdAt = String(new Date(receipt.createdAt).getTime());
+    if (receipt.servedAt) card.dataset.servedAt = String(new Date(receipt.servedAt).getTime());
     const control = document.createElement('div');
     control.className = `kitchen-receipt-control${kitchenView === 'history' ? ' kitchen-receipt-control-done' : ''}`;
     const timer = document.createElement('strong');
     timer.className = 'kitchen-timer';
-    const updateTimer = () => {
-      const endTime = kitchenView === 'history' && receipt.servedAt ? new Date(receipt.servedAt).getTime() : Date.now();
-      const remaining = 600 - Math.floor((endTime - new Date(receipt.createdAt).getTime()) / 1000);
-      const absolute = Math.abs(remaining);
-      const minutes = String(Math.floor(absolute / 60)).padStart(2, '0');
-      const seconds = String(absolute % 60).padStart(2, '0');
-      timer.textContent = remaining < 0 ? `-${minutes}:${seconds}` : `${minutes}:${seconds}`;
-      control.classList.toggle('kitchen-receipt-expired', remaining < 0);
-    };
-    updateTimer();
+    timer.textContent = '10:00';
     const times = document.createElement('span');
     times.className = 'kitchen-receipt-times';
     const formatTime = value => new Date(value).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -240,8 +266,10 @@ async function renderKitchenReceipts() {
       served.className = 'filter-button kitchen-served-button';
       served.textContent = 'Подано';
       served.addEventListener('click', () => {
-        fetch(kitchenReceiptsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...receipt, servedAt: new Date().toISOString() }) });
-        renderKitchenReceipts();
+        fetch(kitchenReceiptsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...receipt, servedAt: new Date().toISOString() }) }).then(() => {
+          kitchenSnapshot = '';
+          renderKitchenReceipts();
+        });
       });
       control.appendChild(served);
     }
@@ -256,8 +284,8 @@ async function renderKitchenReceipts() {
     });
     card.appendChild(body);
     container.appendChild(card);
-    if (kitchenView === 'orders') window.setInterval(updateTimer, 1000);
   });
+  updateKitchenTimers();
 }
 
 function formatPrice(value) {
@@ -2328,10 +2356,18 @@ function init() {
     elements.appShell?.classList.add('hidden');
     elements.kitchenPage?.classList.add('active');
     bindModeSelectionButtons();
-    elements.kitchenOrdersButton?.addEventListener('click', () => { kitchenView = 'orders'; elements.kitchenOrdersButton.classList.add('active'); elements.kitchenHistoryButton.classList.remove('active'); renderKitchenReceipts(); });
-    elements.kitchenHistoryButton?.addEventListener('click', () => { kitchenView = 'history'; elements.kitchenHistoryButton.classList.add('active'); elements.kitchenOrdersButton.classList.remove('active'); renderKitchenReceipts(); });
+    const selectKitchenView = view => {
+      kitchenView = view;
+      kitchenSnapshot = '';
+      elements.kitchenOrdersButton.classList.toggle('active', view === 'orders');
+      elements.kitchenHistoryButton.classList.toggle('active', view === 'history');
+      renderKitchenReceipts();
+    };
+    elements.kitchenOrdersButton?.addEventListener('click', () => selectKitchenView('orders'));
+    elements.kitchenHistoryButton?.addEventListener('click', () => selectKitchenView('history'));
     renderKitchenReceipts();
     window.setInterval(() => { renderKitchenReceipts(); }, 2000);
+    kitchenTimerInterval = window.setInterval(updateKitchenTimers, 1000);
     return;
   }
   loadReceipts();
