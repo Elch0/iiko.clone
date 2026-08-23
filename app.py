@@ -1,12 +1,13 @@
 import base64
 import json
 import os
+from threading import Lock
 from pathlib import Path
 
 import psycopg2
 import psycopg2.extras
 import requests
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 # Try to import embedded fallback catalog for Render (ephemeral filesystem issue)
@@ -55,6 +56,8 @@ catalog = {
     ],
     'items': []
 }
+kitchen_receipts = {}
+kitchen_receipts_lock = Lock()
 
 
 def create_default_catalog():
@@ -362,6 +365,29 @@ def create_app():
     @app.route('/api/catalog', methods=['GET'])
     def get_catalog():
         return jsonify(catalog)
+
+    @app.route('/api/kitchen/receipts', methods=['GET', 'POST', 'DELETE'])
+    def kitchen_receipts_api():
+        if request.method == 'GET':
+            with kitchen_receipts_lock:
+                return jsonify(list(kitchen_receipts.values()))
+
+        if request.method == 'POST':
+            body = request.get_json(silent=True) or {}
+            if not body.get('id') or not isinstance(body.get('items'), list) or not body['items']:
+                return jsonify({'error': 'Invalid kitchen receipt'}), 400
+            with kitchen_receipts_lock:
+                kitchen_receipts[str(body['id'])] = body
+            return jsonify(body), 201
+
+        body = request.get_json(silent=True) or {}
+        receipt_id = body.get('id')
+        with kitchen_receipts_lock:
+            if receipt_id:
+                kitchen_receipts.pop(str(receipt_id), None)
+            else:
+                kitchen_receipts.clear()
+        return jsonify({'status': 'deleted'})
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')

@@ -21,6 +21,7 @@ const configuredRemoteCatalogUrl = (typeof window !== 'undefined' && window.__RE
 const remoteCatalogUrl = configuredRemoteCatalogUrl && !/(your-render-app|your-server|your-user|example\.com)/i.test(configuredRemoteCatalogUrl)
   ? configuredRemoteCatalogUrl
   : defaultRemoteCatalogUrl;
+const kitchenReceiptsUrl = remoteCatalogUrl.replace(/\/api\/catalog$/, '/api/kitchen/receipts');
 let pendingSearchRender = false;
 let pendingRenderFrame = false;
 const menuDataCache = new Map();
@@ -189,12 +190,24 @@ function bindModeSelectionButtons() {
   });
 }
 
-function renderKitchenReceipts() {
+async function getKitchenReceipts() {
+  const response = await fetch(kitchenReceiptsUrl, { cache: 'no-store' });
+  if (!response.ok) throw new Error(`Kitchen API ${response.status}`);
+  return response.json();
+}
+
+async function renderKitchenReceipts() {
   const container = elements.kitchenReceiptList;
   if (!container) return;
   container.innerHTML = '';
-  const bridge = getAndroidBridge();
-  const incoming = bridge ? JSON.parse((kitchenView === 'history' ? bridge.getKitchenHistory() : bridge.getKitchenReceipts()) || '[]') : [];
+  let allReceipts = [];
+  try {
+    allReceipts = await getKitchenReceipts();
+  } catch (error) {
+    container.innerHTML = '<div class="empty-state">Нет подключения к серверу кухни.</div>';
+    return;
+  }
+  const incoming = allReceipts.filter(receipt => kitchenView === 'history' ? receipt.servedAt : !receipt.servedAt);
   if (!incoming.length) {
     container.innerHTML = '<div class="empty-state">Нет чеков с напитками Safia Бар.</div>';
     return;
@@ -227,7 +240,7 @@ function renderKitchenReceipts() {
       served.className = 'filter-button kitchen-served-button';
       served.textContent = 'Подано';
       served.addEventListener('click', () => {
-        bridge?.markKitchenReceiptServed(receipt.id);
+        fetch(kitchenReceiptsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...receipt, servedAt: new Date().toISOString() }) });
         renderKitchenReceipts();
       });
       control.appendChild(served);
@@ -1201,9 +1214,8 @@ function saveReceiptWithPayments(payments) {
     ...receipt,
     items: receipt.items.filter(item => item.isSafiaBar)
   };
-  const bridge = getAndroidBridge();
-  if (bridge && kitchenReceipt.items.length) {
-    bridge.sendReceipt(JSON.stringify(kitchenReceipt));
+  if (kitchenReceipt.items.length) {
+    fetch(kitchenReceiptsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(kitchenReceipt) });
   }
   
   // Clear current receipt and create new one
@@ -2054,7 +2066,7 @@ function clearReceipts() {
   if (!confirmed) return;
   savedReceipts = [];
   saveReceipts();
-  getAndroidBridge()?.clearReceiptHistory();
+  fetch(kitchenReceiptsUrl, { method: 'DELETE' });
   renderReceipts();
 }
 
@@ -2206,7 +2218,7 @@ function renderReceipts() {
       if (!ok) return;
       savedReceipts = savedReceipts.filter(r => r.id !== receipt.id);
       saveReceipts();
-      getAndroidBridge()?.deleteReceipt(receipt.id);
+      fetch(kitchenReceiptsUrl, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: receipt.id }) });
       renderReceipts();
     });
     rightBlock.appendChild(del);
@@ -2319,9 +2331,7 @@ function init() {
     elements.kitchenOrdersButton?.addEventListener('click', () => { kitchenView = 'orders'; elements.kitchenOrdersButton.classList.add('active'); elements.kitchenHistoryButton.classList.remove('active'); renderKitchenReceipts(); });
     elements.kitchenHistoryButton?.addEventListener('click', () => { kitchenView = 'history'; elements.kitchenHistoryButton.classList.add('active'); elements.kitchenOrdersButton.classList.remove('active'); renderKitchenReceipts(); });
     renderKitchenReceipts();
-    window.setInterval(() => {
-      renderKitchenReceipts();
-    }, 2000);
+    window.setInterval(() => { renderKitchenReceipts(); }, 2000);
     return;
   }
   loadReceipts();
