@@ -347,8 +347,12 @@ def rebuild_items():
 
 
 def initialize_catalog():
+    global USE_POSTGRES
     if USE_POSTGRES:
-        init_postgres()
+        try:
+            init_postgres()
+        except Exception:
+            USE_POSTGRES = False
     loaded = load_catalog()
     catalog.clear()
     catalog.update(loaded)
