@@ -1911,7 +1911,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "t-39",
           "name": "Ягодно - творожный торт NEW",
-          "price": 7900,
+          "price": 10500,
           "modifier": "",
           "modifiers": []
         }
@@ -1975,6 +1975,13 @@ EMBEDDED_CATALOG_JSON = r"""{
           "id": "tm-8",
           "name": "Шок Банан мини торт",
           "price": 9900,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tm-9",
+          "name": "Ягодно-Творожный мини",
+          "price": 7900,
           "modifier": "",
           "modifiers": []
         }
@@ -2095,6 +2102,34 @@ EMBEDDED_CATALOG_JSON = r"""{
           "price": 850,
           "modifier": "",
           "modifiers": []
+        },
+        {
+          "id": "imb-16",
+          "name": "Имбирный пряник Девочка KZ",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "imb-17",
+          "name": "Имбирный пряник Мальчик KZ",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "imb-18",
+          "name": "Имбирный пряник Флаг KZ",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "imb-19",
+          "name": "Имбирный пряник Юрта KZ",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
         }
       ]
     },
@@ -2197,7 +2232,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "mer-1",
           "name": "Открытка Q2",
-          "price": 400,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
@@ -3346,6 +3381,13 @@ EMBEDDED_CATALOG_JSON = r"""{
           "id": "tr-23",
           "name": "Якобс торт",
           "price": 19200,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "tr-24",
+          "name": "Шок малиновый торт прямоугольный",
+          "price": 18800,
           "modifier": "",
           "modifiers": []
         }
