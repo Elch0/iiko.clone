@@ -3988,14 +3988,14 @@
         {
           "id": "ss-12",
           "name": "Маленький эклер большой сет",
-          "price": 2500,
+          "price": 2600,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "ss-13",
           "name": "Маленький эклер мини сет",
-          "price": 1300,
+          "price": 1400,
           "modifier": "",
           "modifiers": []
         },
@@ -4121,14 +4121,14 @@
         {
           "id": "ss-31",
           "name": "Шок палочка большой сет",
-          "price": 2900,
+          "price": 3000,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "ss-32",
           "name": "Шок палочки мини сет",
-          "price": 1500,
+          "price": 1600,
           "modifier": "",
           "modifiers": []
         }
@@ -4317,7 +4317,7 @@
         {
           "id": "chch-1",
           "name": "Муравейник",
-          "price": 300,
+          "price": 1800,
           "modifier": "",
           "modifiers": []
         },
