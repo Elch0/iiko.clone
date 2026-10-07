@@ -3824,6 +3824,27 @@ EMBEDDED_CATALOG_JSON = r"""{
           "price": 500,
           "modifier": "",
           "modifiers": []
+        },
+        {
+          "id": "sv-69",
+          "name": "Феерверки бол 1шт",
+          "price": 260,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-70",
+          "name": "Феерверки мал 1шт",
+          "price": 160,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-71",
+          "name": "Феерверки сред 1шт",
+          "price": 210,
+          "modifier": "",
+          "modifiers": []
         }
       ]
     },
