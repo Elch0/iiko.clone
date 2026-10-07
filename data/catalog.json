@@ -3398,48 +3398,6 @@
       "parentId": null,
       "items": [
         {
-          "id": "sv-1",
-          "name": "Свеча длинная цветная 6шт",
-          "price": 750,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-2",
-          "name": "Свечи блески 6шт",
-          "price": 750,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-3",
-          "name": "Свечи набор 6шт",
-          "price": 470,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-4",
-          "name": "Свечи спираль 12шт",
-          "price": 680,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-5",
-          "name": "Свечка Радуга",
-          "price": 500,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-6",
-          "name": "Свечка Фейерверк",
-          "price": 1000,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
           "id": "sv-7",
           "name": "Свечки бенто",
           "price": 700,
@@ -3450,13 +3408,6 @@
           "id": "sv-8",
           "name": "Свечки набор 10шт",
           "price": 700,
-          "modifier": "",
-          "modifiers": []
-        },
-        {
-          "id": "sv-9",
-          "name": "Свечки СДР (буквы)",
-          "price": 1000,
           "modifier": "",
           "modifiers": []
         },
@@ -3477,7 +3428,7 @@
         {
           "id": "sv-12",
           "name": "Топпер",
-          "price": 800,
+          "price": 900,
           "modifier": "",
           "modifiers": []
         },
@@ -3568,70 +3519,70 @@
         {
           "id": "sv-25",
           "name": "Цифра Золотой №0",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-26",
           "name": "Цифра Золотой №1",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-27",
           "name": "Цифра Золотой №2",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-28",
           "name": "Цифра Золотой №3",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-29",
           "name": "Цифра Золотой №4",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-30",
           "name": "Цифра Золотой №5",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-31",
           "name": "Цифра Золотой №6",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-32",
           "name": "Цифра Золотой №7",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-33",
           "name": "Цифра Золотой №8",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
         {
           "id": "sv-34",
           "name": "Цифра Золотой №9",
-          "price": 350,
+          "price": 500,
           "modifier": "",
           "modifiers": []
         },
@@ -3772,6 +3723,104 @@
           "id": "sv-54",
           "name": "Цифра Цветная №9",
           "price": 450,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-55",
+          "name": "Свечи Пружинки",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-56",
+          "name": "Свечки Звездочка",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-57",
+          "name": "Свечки Сердечки",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-58",
+          "name": "Свечки магия",
+          "price": 800,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-59",
+          "name": "Цифра Серебрянный №0",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-60",
+          "name": "Цифра Серебрянный №1",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-61",
+          "name": "Цифра Серебрянный №2",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-62",
+          "name": "Цифра Серебрянный №3",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-63",
+          "name": "Цифра Серебрянный №4",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-64",
+          "name": "Цифра Серебрянный №5",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-65",
+          "name": "Цифра Серебрянный №6",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-66",
+          "name": "Цифра Серебрянный №7",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-67",
+          "name": "Цифра Серебрянный №8",
+          "price": 500,
+          "modifier": "",
+          "modifiers": []
+        },
+        {
+          "id": "sv-68",
+          "name": "Цифра Серебрянный №9",
+          "price": 500,
           "modifier": "",
           "modifiers": []
         }
