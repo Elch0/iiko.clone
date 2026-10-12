@@ -1757,7 +1757,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "t-17",
           "name": "Рафаелло торт",
-          "price": 14500,
+          "price": 15500,
           "modifier": "",
           "modifiers": []
         },
@@ -1960,7 +1960,7 @@ EMBEDDED_CATALOG_JSON = r"""{
         {
           "id": "tm-6",
           "name": "Рафаэлло торт мини",
-          "price": 8900,
+          "price": 9200,
           "modifier": "",
           "modifiers": []
         },
