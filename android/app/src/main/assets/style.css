@@ -1561,19 +1561,24 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   }
 
   .folder-card {
-    height: auto;
-    min-height: 44px;
+    height: 100%;
+    min-height: 0;
   }
 
   .folder-button {
     height: 100%;
-    min-height: 44px;
+    min-height: 36px;
     padding: 4px;
     font-size: clamp(10px, 2.4cqw, 12px);
     line-height: 1.1;
   }
 
+  #folder-list button.folder-button {
+    min-height: 36px;
+  }
+
   .item-grid {
+    gap: 1px;
     grid-auto-rows: minmax(0, 1fr);
     height: 100%;
     min-height: 0;
@@ -1583,14 +1588,14 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   }
 
   .item-card {
-    min-height: 0;
-    padding: 2px;
+    min-height: 36px;
+    padding: 4px;
   }
 
   .item-name {
-    font-size: clamp(9px, 2.7cqw, 10px);
-    line-height: 1;
-    min-height: 2em;
+    font-size: clamp(10px, 2.4cqw, 12px);
+    line-height: 1.1;
+    min-height: calc(1.1em * 2);
   }
 
   .item-category {
