@@ -127,11 +127,6 @@ let kitchenSnapshot = '';
 let kitchenTimerInterval = null;
 let kitchenRequestPending = false;
 
-// Multiple receipts management
-let receipts = [{ id: 1, items: {}, payments: [] }];
-let activeReceiptId = 1;
-let receiptCounter = 1;
-
 let menuState = {
   view: 'folders',
   categoryId: null,
@@ -153,13 +148,6 @@ const elements = {
   safiaToolbarActions: document.getElementById('safia-toolbar-actions'),
   quantityModal: document.getElementById('quantity-modal'),
   saveButton: document.getElementById('save-button'),
-  receiptTabs: document.getElementById('receipt-tabs'),
-  prevReceipt: document.getElementById('prev-receipt'),
-  nextReceipt: document.getElementById('next-receipt'),
-  addReceipt: document.getElementById('add-receipt'),
-  deleteReceipt: document.getElementById('delete-receipt'),
-  receiptNumber: document.getElementById('receipt-number'),
-  receiptCount: document.getElementById('receipt-count'),
   backButton: document.getElementById('back-button'),
   searchButton: document.getElementById('search-button'),
   homeButton: document.getElementById('home-button'),
@@ -406,69 +394,6 @@ function applyColumnLayout(container, count) {
   container.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
   container.style.gridTemplateRows = count >= 5 && count <= 8 ? 'repeat(4, auto)' : 'repeat(8, auto)';
   container.style.gridAutoFlow = 'column';
-}
-
-function getActiveReceipt() {
-  return receipts.find(r => r.id === activeReceiptId) || receipts[0];
-}
-
-function createNewReceipt() {
-  receiptCounter += 1;
-  const newReceipt = { id: receiptCounter, items: {}, payments: [] };
-  receipts.push(newReceipt);
-  switchReceipt(receiptCounter);
-}
-
-function switchReceipt(receiptId) {
-  const receipt = receipts.find(r => r.id === receiptId);
-  if (!receipt) return;
-  
-  // Save current receipt state
-  const currentReceipt = getActiveReceipt();
-  currentReceipt.items = selectedItems;
-  currentReceipt.payments = paymentDraft;
-  
-  // Switch to new receipt
-  activeReceiptId = receiptId;
-  selectedItems = receipt.items;
-  paymentDraft = receipt.payments;
-  activePaymentTypeId = paymentTypes[0]?.id || '';
-  activeSelectedItemId = null;
-  
-  renderReceiptTabs();
-  renderSelectedItems();
-  renderPaymentActions();
-}
-
-function renderReceiptTabs() {
-  const currentIndex = receipts.findIndex(r => r.id === activeReceiptId);
-  const totalCount = receipts.length;
-  
-  // Update display
-  elements.receiptNumber.textContent = currentIndex + 1;
-  elements.receiptCount.textContent = totalCount;
-  
-  // Disable/enable navigation buttons
-  elements.prevReceipt.disabled = currentIndex === 0 || totalCount === 1;
-  elements.nextReceipt.disabled = currentIndex === totalCount - 1 || totalCount === 1;
-  
-  // Hide nav buttons if only one receipt
-  elements.prevReceipt.style.display = totalCount > 1 ? 'flex' : 'none';
-  elements.nextReceipt.style.display = totalCount > 1 ? 'flex' : 'none';
-}
-
-function prevReceipt() {
-  const currentIndex = receipts.findIndex(r => r.id === activeReceiptId);
-  if (currentIndex > 0) {
-    switchReceipt(receipts[currentIndex - 1].id);
-  }
-}
-
-function nextReceipt() {
-  const currentIndex = receipts.findIndex(r => r.id === activeReceiptId);
-  if (currentIndex < receipts.length - 1) {
-    switchReceipt(receipts[currentIndex + 1].id);
-  }
 }
 
 function loadReceipts() {
@@ -1245,11 +1170,6 @@ function saveReceiptWithPayments(payments) {
   if (kitchenReceipt.items.length) {
     fetch(kitchenReceiptsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(kitchenReceipt) });
   }
-  
-  // Clear current receipt and create new one
-  const currentReceipt = getActiveReceipt();
-  currentReceipt.items = {};
-  currentReceipt.payments = [];
   
   selectedItems = {};
   paymentDraft = [];
@@ -2106,34 +2026,6 @@ function createReceipt() {
   openPaymentModal();
 }
 
-function deleteActiveReceipt() {
-  if (receipts.length <= 1) {
-    return;
-  }
-
-  const currentIndex = receipts.findIndex(receipt => receipt.id === activeReceiptId);
-  if (currentIndex === -1) {
-    return;
-  }
-
-  const nextReceipt = receipts[currentIndex + 1] || receipts[currentIndex - 1];
-  receipts = receipts.filter(receipt => receipt.id !== activeReceiptId);
-  activeReceiptId = nextReceipt?.id || receipts[0]?.id;
-  const nextActive = receipts.find(receipt => receipt.id === activeReceiptId);
-  if (nextActive) {
-    selectedItems = nextActive.items || {};
-    paymentDraft = nextActive.payments || [];
-  } else {
-    selectedItems = {};
-    paymentDraft = [];
-  }
-  activeSelectedItemId = null;
-  activePaymentTypeId = paymentTypes[0]?.id || '';
-  renderReceiptTabs();
-  renderSelectedItems();
-  renderPaymentActions();
-}
-
 function renderReceipts() {
   elements.receiptList.innerHTML = '';
 
@@ -2332,10 +2224,6 @@ function setupEvents() {
   elements.backButton.addEventListener('click', goBack);
   elements.searchButton.addEventListener('click', openSearch);
   elements.homeButton.addEventListener('click', goHome);
-  elements.prevReceipt.addEventListener('click', prevReceipt);
-  elements.nextReceipt.addEventListener('click', nextReceipt);
-  elements.addReceipt.addEventListener('click', createNewReceipt);
-  elements.deleteReceipt.addEventListener('click', deleteActiveReceipt);
   elements.menuSearchInput.addEventListener('input', event => handleSearchInput(event.target.value));
   elements.quantityModal.addEventListener('click', event => {
     if (event.target === elements.quantityModal) {
@@ -2373,7 +2261,6 @@ function init() {
   loadReceipts();
   setupEvents();
   renderPaymentTypes();
-  renderReceiptTabs();
   initializeCatalog();
   renderSelectedItems();
   renderReceipts();

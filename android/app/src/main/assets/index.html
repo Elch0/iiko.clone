@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>iiko Клон</title>
-  <link rel="stylesheet" href="style.css?v=20261017-1" />
+  <link rel="stylesheet" href="style.css?v=20261017-2" />
 </head>
 <body>
   <div class="app-shell">
@@ -43,25 +43,6 @@
 
               <button id="save-button" class="save-button">Сохранить чек</button>
 
-              <div id="receipt-tabs" class="receipt-tabs">
-                <button id="prev-receipt" class="receipt-nav-button receipt-prev" title="Предыдущий чек" disabled>
-                  &lt;
-                </button>
-                <div class="receipt-number-display">
-                  <span id="receipt-number">1</span> из <span id="receipt-count">1</span>
-                </div>
-                <button id="next-receipt" class="receipt-nav-button receipt-next" title="Следующий чек" disabled>
-                  &gt;
-                </button>
-                <button id="delete-receipt" class="receipt-delete-button" title="Удалить текущий чек" aria-label="Удалить текущий чек">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 7h16M9 7V4h6v3m-8 0 1 13h10l1-13" />
-                  </svg>
-                </button>
-                <button id="add-receipt" class="receipt-add-button" title="Добавить новый чек">
-                  +
-                </button>
-              </div>
             </div>
           </section>
 
@@ -161,6 +142,6 @@
     window.__API_BASE_URL__ = safeRenderApiBaseUrl;
   </script>
   <script src="utils.js?v=20260811-1"></script>
-  <script src="app.js?v=20260813-1"></script>
+  <script src="app.js?v=20261017-2"></script>
 </body>
 </html>
