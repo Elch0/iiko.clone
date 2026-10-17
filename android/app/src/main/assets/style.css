@@ -278,13 +278,36 @@ body {
   padding-top: 2px;
   padding-bottom: 2px;
   margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 6px 8px;
   width: 100%;
 }
 
+.summary {
+  grid-column: 1;
+  grid-row: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0;
+}
+
+.selected-actions {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.selected-actions:empty {
+  display: none;
+}
+
 .save-button {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
   position: static;
   width: 100%;
   padding: clamp(8px, 1.4cqw, 14px) clamp(10px, 1.6cqw, 16px);
@@ -850,8 +873,9 @@ body {
 }
 
 .summary .total-price {
-  font-size: clamp(12px, 0.95vw, 15px);
+  font-size: clamp(18px, 1.8cqw, 24px);
   font-weight: 700;
+  line-height: 1.1;
 }
 
 .selected-actions {
@@ -1538,24 +1562,35 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
 
   .folder-card {
     height: auto;
-    min-height: 76px;
+    min-height: 44px;
   }
 
   .folder-button {
     height: 100%;
-    min-height: 76px;
+    min-height: 44px;
+    padding: 4px;
+    font-size: clamp(10px, 2.4cqw, 12px);
+    line-height: 1.1;
   }
 
   .item-grid {
-    grid-auto-rows: minmax(88px, auto);
-    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr)) !important;
-    grid-template-rows: none !important;
-    grid-auto-flow: row !important;
+    grid-auto-rows: minmax(48px, auto);
     height: auto;
     min-height: 100%;
     max-height: none;
     overflow-y: auto;
     align-content: start;
+  }
+
+  .item-card {
+    min-height: 44px;
+    padding: 4px;
+  }
+
+  .item-name {
+    font-size: clamp(10px, 2.4cqw, 12px);
+    line-height: 1.1;
+    min-height: calc(1.1em * 2);
   }
 
   .history-header {
