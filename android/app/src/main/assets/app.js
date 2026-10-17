@@ -390,9 +390,9 @@ function applyColumnLayout(container, count) {
   } else if (count > 8) {
     columns = Math.max(1, Math.min(4, Math.ceil(count / 8)));
   }
+  const rows = Math.max(1, Math.ceil(count / columns));
 
   container.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
-  const rows = Math.max(1, Math.ceil(count / columns));
   container.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
   container.style.gridAutoFlow = 'column';
 }
@@ -1905,8 +1905,10 @@ function renderSelectedItems() {
 
     const removeButton = document.createElement('button');
     removeButton.type = 'button';
-    removeButton.className = 'action-button';
-    removeButton.textContent = '×';
+    removeButton.className = 'action-button remove-action-button';
+    removeButton.title = 'Удалить позицию';
+    removeButton.setAttribute('aria-label', 'Удалить позицию');
+    removeButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h10l1-13" /></svg>';
     removeButton.addEventListener('click', event => {
       event.stopPropagation();
       delete selectedItems[activeItem.id];

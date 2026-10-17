@@ -56,7 +56,7 @@ body {
 .kitchen-page {
   display: none;
   height: 100vh;
-  padding: 16px;
+  padding: 18px;
   overflow: hidden;
 }
 
@@ -66,10 +66,11 @@ body {
 
 .kitchen-header {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .kitchen-header h1 {
@@ -78,14 +79,22 @@ body {
 
 .kitchen-brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.kitchen-tabs {
+  display: flex;
+  flex: 0 0 auto;
   gap: 8px;
 }
 
 .kitchen-receipt-card {
   max-width: none;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;
+  break-inside: auto;
 }
 
 .kitchen-receipt-control {
@@ -96,6 +105,7 @@ body {
   padding: 7px 10px;
   background: #9aaabd;
   color: #172333;
+  break-inside: avoid;
 }
 
 .kitchen-receipt-times {
@@ -126,6 +136,7 @@ body {
 .kitchen-receipt-body {
   padding: 3px 10px 5px;
   background: #fff;
+  break-inside: auto;
 }
 
 .kitchen-receipt-body .receipt-item {
@@ -135,14 +146,12 @@ body {
 }
 
 .kitchen-page .receipt-list {
-  height: calc(100vh - 72px);
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(3, max-content);
-  grid-auto-columns: calc((100% - 32px) / 3);
-  align-content: start;
-  align-items: start;
-  gap: 8px 16px;
+  height: calc(100vh - 88px);
+  display: block;
+  column-count: 3;
+  column-gap: 16px;
+  column-rule: 1px dashed #9aaabd;
+  column-fill: auto;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
@@ -152,17 +161,22 @@ body {
   display: block;
   width: 100%;
   margin-bottom: 8px;
+  break-inside: auto;
+}
+
+.kitchen-receipt-body .receipt-item {
+  break-inside: avoid;
 }
 
 @media (max-width: 900px) {
   .kitchen-page .receipt-list {
-    grid-auto-columns: calc((100% - 16px) / 2);
+    column-count: 2;
   }
 }
 
 @media (max-width: 600px) {
   .kitchen-page .receipt-list {
-    grid-auto-columns: 100%;
+    column-count: 1;
   }
 }
 
@@ -923,6 +937,16 @@ body {
   stroke-linejoin: round;
 }
 
+
+.selected-actions .remove-action-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .item-comment,
 .receipt-comment,
 .selected-modifier,
@@ -1549,6 +1573,46 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
     border-radius: 14px;
   }
 
+
+  .selected-panel {
+    padding: 0;
+  }
+
+  .selected-panel .panel-header {
+    margin-bottom: 4px;
+  }
+
+  .selected-footer {
+    gap: 4px 6px;
+    padding: 0 4px 2px;
+  }
+
+  .summary {
+    font-size: 10px;
+  }
+
+  .summary .total-price {
+    font-size: 14px;
+  }
+
+  .selected-actions {
+    gap: 3px;
+    margin-bottom: 0;
+  }
+
+  #selected-actions button.action-button {
+    min-height: 29px;
+    height: 29px;
+    padding: 0 4px;
+    font-size: 10px;
+  }
+
+  #save-button {
+    min-height: 35px;
+    height: 35px;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
   .create-grid > .selected-panel,
   .create-grid > .menu-panel {
     margin-left: 0;
@@ -1601,10 +1665,10 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   }
 
   #selected-actions button.action-button {
-    min-height: 36px;
-    height: 36px;
+    min-height: 29px;
+    height: 29px;
     padding: 0 4px;
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .item-category {
@@ -1633,7 +1697,8 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
 
   .history-header {
     align-items: stretch;
-    gap: 12px;
+    gap: 8px;
+    margin-bottom: 14px;
   }
 
   .history-actions,
@@ -1644,7 +1709,13 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   .history-filter {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
+  }
+
+  #page-history .history-header .filter-button {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 12px;
   }
 
   .history-summary {
@@ -1708,6 +1779,11 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
     padding: 8px;
   }
 
+
+  .selected-panel {
+    padding: 0;
+  }
+
   .panel-header {
     margin-bottom: 4px;
   }
@@ -1717,9 +1793,10 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   }
 
   #save-button {
-    min-height: 36px;
-    padding: 6px 8px;
-    font-size: 12px;
+    min-height: 35px;
+    height: 35px;
+    padding: 8px 10px;
+    font-size: 11px;
   }
 
   .history-filter .filter-button {
