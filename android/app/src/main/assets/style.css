@@ -1522,6 +1522,7 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
 
   .app-header {
     align-items: flex-start;
+    gap: 2px;
     margin-bottom: 4px;
   }
 
