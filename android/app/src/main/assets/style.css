@@ -1522,6 +1522,7 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
 
   .app-header {
     align-items: flex-start;
+    margin-bottom: 4px;
   }
 
   .page-switch {
@@ -1535,7 +1536,7 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
   .create-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(250px, 0.8fr) minmax(350px, 1.2fr);
-    gap: 10px;
+    gap: 2px;
     height: max(620px, calc(100dvh - 130px));
     min-height: 0;
   }
