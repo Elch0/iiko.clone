@@ -392,7 +392,8 @@ function applyColumnLayout(container, count) {
   }
 
   container.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
-  container.style.gridTemplateRows = count >= 5 && count <= 8 ? 'repeat(4, auto)' : 'repeat(8, auto)';
+  const rows = Math.max(1, Math.ceil(count / columns));
+  container.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
   container.style.gridAutoFlow = 'column';
 }
 
