@@ -1600,6 +1600,13 @@ button:not(.brand-button):not(.subtitle-button):focus-visible {
     min-height: calc(1.1em * 2);
   }
 
+  #selected-actions button.action-button {
+    min-height: 36px;
+    height: 36px;
+    padding: 0 4px;
+    font-size: 12px;
+  }
+
   .item-category {
     max-width: 100%;
     overflow: hidden;
